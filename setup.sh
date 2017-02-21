@@ -25,5 +25,6 @@ magerun2 config:set design/theme/theme_id 4
 magento-command indexer:reindex design_config_grid
 
 magento-command setup:upgrade
+magento-command setup:di:compile
 magento-command setup:static-content:deploy
 magento-command cache:flush
