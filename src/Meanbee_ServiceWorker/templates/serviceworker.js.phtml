@@ -1,0 +1,238 @@
+<?php /** @var \Meanbee\ServiceWorker\Block\Js $block */ ?>
+'use strict';
+
+const version = '<?php echo $block->getVersion() ?>';
+const offlinePage = '<?php echo $block->getOfflinePageUrl() ?>';
+const shell = '<?php echo $block->getUrl('shell') ?>';
+const urlBlacklist = <?php echo json_encode($block->getUrlBlacklist()) ?>;
+
+// Functions
+// #####################################
+
+/**
+ * Add all of the static pages and assets to the cache.
+ *
+ * @returns {*|Promise.<TResult>}
+ */
+function updateStaticCache() {
+    return caches.open(version)
+        .then(cache => {
+            return cache.addAll([
+                offlinePage,
+                shell,
+                '<?php echo $block->getViewFileUrl('css/app-shell.css') ?>'
+            ])
+            .then(() => {
+                cache.match(shell).then(response => {
+                    return response.text().then(text => {
+                        let shellStartString = '<div class="shell__start"></div>';
+                        let shellEndString = '<div class="shell__end"></div>';
+                        const headerEnd = text.indexOf(shellStartString);
+                        const footerBegin = text.indexOf(shellEndString) + shellEndString.length;
+
+                        return Promise.all([
+                            cache.put('/shell-start.html', new Response(text.slice(0, headerEnd), response)),
+                            cache.put('/shell-end.html', new Response(text.slice(footerBegin), response))
+                        ]);
+                    });
+                });
+            });
+        });
+}
+
+/**
+ * Delete caches that do not match the current version of the service worker.
+ *
+ * @returns {*|Promise.<TResult>}
+ */
+function clearOldCaches() {
+    return caches.keys().then(keys => {
+        return Promise.all(
+            keys
+                .filter(key => key.indexOf(version) !== 0)
+                .map(key => caches.delete(key))
+        );
+    });
+}
+
+/**
+ * Check if the given request is an ajax request
+ *
+ * @param {Request} request
+ * @returns {boolean}
+ */
+function isAjaxRequest(request) {
+    return request.headers.get('X-Requested-With') && request.headers.get('X-Requested-With').indexOf('XMLHttpRequest') !== -1;
+}
+
+/**
+ * Check if the given request is expecting a HTML page returned.
+ *
+ * @param {Request} request
+ * @returns {boolean}
+ */
+function isHtmlRequest(request) {
+    return request.headers.get('Accept').indexOf('text/html') !== -1;
+}
+
+/**
+ * Check if the given URL matches any of the blacklist URL prefixes.
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+function isBlacklisted(url) {
+    let prefix_match = urlBlacklist["prefix_match"].filter(bl => url.indexOf(bl) == 0).length > 0;
+    let full_match = urlBlacklist["full_match"].filter(bl => url == bl).length > 0;
+    return prefix_match || full_match;
+}
+
+/**
+ * Return the response if it can be cached, null otherwise.
+ *
+ * @param {Response} response
+ * @returns {boolean}
+ */
+function isCachableResponse(response) {
+    return response && response.ok;
+}
+
+/**
+ * Return the given URL without the given parameter
+ *
+ * @param {string} url
+ * @param {string} param
+ * @returns {string}
+ */
+function removeUrlParam(url, param) {
+    let startIndex = url.indexOf(param);
+    let newUrl = '';
+
+    if ( url.indexOf('&') == -1 ) {
+        newUrl += url.slice(0, startIndex -1 );
+    } else {
+        newUrl += url.slice(0, startIndex);
+    }
+
+    newUrl += url.slice(startIndex + param.length, url.length);
+    return newUrl;
+}
+
+// Install
+// #####################################
+
+self.addEventListener('install', event => {
+    event.waitUntil(
+        updateStaticCache()
+            .then(() => self.skipWaiting())
+    );
+});
+
+// Activate
+// #####################################
+
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        clearOldCaches()
+            .then(() => self.clients.claim())
+    );
+});
+
+// Fetch
+// #####################################
+
+self.addEventListener('fetch', event => {
+    let request = event.request;
+
+    if (request.method !== 'GET') {
+        // Only process GET request, unless offline and expecting a HTML page, then show the offline page instead
+        if (!navigator.onLine && isHtmlRequest(request)) {
+            return event.respondWith(caches.match(offlinePage));
+        }
+        return;
+    }
+
+    if (isHtmlRequest(request) && !isAjaxRequest(request) && request.url.indexOf('service_worker') === -1 && navigator.onLine) {
+        return event.respondWith(
+            caches.match(request)
+                .then(response => {
+                    if (!response) {
+                        return caches.match(shell);
+                    }
+                    return response;
+                })
+        );
+    }
+
+    if (isHtmlRequest(request) && !isAjaxRequest(request)) {
+        return event.respondWith(
+            fetch(request)
+                .then(response => {
+                    if (isCachableResponse(response) && !isBlacklisted(response.url)) {
+                        let copy = response.clone();
+                        caches.open(version).then(cache => cache.put(request, copy));
+                    }
+                    return response;
+                })
+                .catch(() => {
+                    return caches.match(request)
+                        .then(response => {
+                            if (!response && request.mode == 'navigate') {
+                                return caches.match(offlinePage);
+                            }
+                            return response;
+                        });
+                })
+        );
+    } else {
+        // For asset requests, get from cache, otherwise fetch from the network
+        return event.respondWith(
+            caches.match(request)
+                .then(response => {
+                    return response || fetch(request)
+                            .then(response => {
+                                if (isCachableResponse(response)) {
+                                    let copy = response.clone();
+                                    caches.open(version).then(cache => cache.put(request, copy));
+                                }
+
+                                // Create our fully formed page and store it in cache for repeat views
+                                if (request.url.indexOf('service_worker') !== -1) {
+                                    let copy = response.clone();
+                                    const startFetch = caches.match('/shell-start.html');
+                                    const content = copy.text();
+                                    const endFetch = caches.match('/shell-end.html');
+
+                                    Promise.all([
+                                        startFetch,
+                                        content,
+                                        endFetch
+                                    ]).then(values => {
+                                        return Promise.all([
+                                            values[0].text(),
+                                            values[1],
+                                            values[2].text()
+                                        ])
+                                    }).then(page => {
+                                        let newUrl = removeUrlParam( request.url, 'service_worker=true' );
+                                        page[1] = JSON.parse(page[1]).content;
+
+                                        let newResponse = new Response(
+                                            new Blob(page, {
+                                                type: 'text/html'
+                                            })
+                                        );
+                                        let newRequest = new Request(
+                                            newUrl
+                                        );
+
+                                        caches.open(version).then(cache => cache.put(newRequest, newResponse));
+                                    });
+                                }
+
+                                return response;
+                            });
+                })
+        );
+    }
+});
