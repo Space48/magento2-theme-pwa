@@ -24,6 +24,10 @@
     "meanbee-pwa": {
       "type": "vcs",
       "url": "git@github.com:meanbee/magento2-pwa.git"
+    },
+    "css-preload": {
+      "type": "vcs",
+      "url": "git@github.com:meanbee/magento2-csspreload.git"
     }
   },
   "require": {
@@ -31,7 +35,8 @@
     "meanbee/magento2-serviceworker": "^1.0",
     "meanbee/magento2-webappmanifest": "^1.0",
     "meanbee/magento2-svghelper": "^1.0",
-    "meanbee/magento2-pwa": "@dev"
+    "meanbee/magento2-pwa": "@dev",
+    "meanbee/magento2-csspreload": "@dev"
   },
   "autoload": {
     "files": [

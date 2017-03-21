@@ -7,6 +7,13 @@ if [ $(find $MAGENTO_ROOT -maxdepth 0 -type d -empty 2>/dev/null) ]; then
 
     cd $MAGENTO_ROOT
 
+    # Add dependency extensions from git repositories (Composer does not support recursive repository definitions)
+    composer config repositories.meanbee_helpers_pwa vcs git@github.com:meanbee/magento2-pwa.git
+    composer require "meanbee/magento2-pwa" "@dev"
+
+    composer config repositories.meanbee_csspreload vcs git@github.com:meanbee/magento2-csspreload.git
+    composer require "meanbee/magento2-csspreload" "@dev"
+
     # Add the extension via Composer
     composer config repositories.meanbee_theme_pwa '{"type": "path", "url": "/src", "options": {"symlink": true}}'
 
