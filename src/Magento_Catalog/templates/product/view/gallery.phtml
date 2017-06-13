@@ -36,7 +36,7 @@
         thumbBarHeight = config.thumbheight;
     }
 
-    loader.style.paddingBottom = ( config.height / config.width * 100) + "%";
+    loader.style.minHeight = config.height + 'px';
 </script>
 <script type="text/x-magento-init">
     {
@@ -80,7 +80,8 @@
                         "navarrows": <?php /* @escapeNotVerified */  echo $block->getVar("gallery/navarrows"); ?>,
                     <?php endif; ?>
                     "navtype": "<?php /* @escapeNotVerified */  echo $block->getVar("gallery/navtype"); ?>",
-                    "navdir": "<?php /* @escapeNotVerified */  echo $block->getVar("gallery/navdir"); ?>"
+                    "navdir": "<?php /* @escapeNotVerified */  echo $block->getVar("gallery/navdir"); ?>",
+                    "maxheight": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'height') ?>
                 },
                 "fullscreen": {
                     "nav": "<?php /* @escapeNotVerified */  echo $block->getVar("gallery/fullscreen/nav"); ?>",
