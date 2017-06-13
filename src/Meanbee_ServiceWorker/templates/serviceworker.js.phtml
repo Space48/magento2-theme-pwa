@@ -22,21 +22,6 @@ function updateStaticCache() {
                 shell,
                 '<?php echo $block->getViewFileUrl('css/app-shell.css') ?>'
             ])
-            .then(() => {
-                cache.match(shell).then(response => {
-                    return response.text().then(text => {
-                        let shellStartString = '<div class="shell__start"></div>';
-                        let shellEndString = '<div class="shell__end"></div>';
-                        const headerEnd = text.indexOf(shellStartString);
-                        const footerBegin = text.indexOf(shellEndString) + shellEndString.length;
-
-                        return Promise.all([
-                            cache.put('/shell-start.html', new Response(text.slice(0, headerEnd), response)),
-                            cache.put('/shell-end.html', new Response(text.slice(footerBegin), response))
-                        ]);
-                    });
-                });
-            });
         });
 }
 
@@ -144,25 +129,29 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     let request = event.request;
 
+    // If offline and expecting a HTML page not through AJAX, then show the offline page
     if (request.method !== 'GET') {
-        // Only process GET request, unless offline and expecting a HTML page, then show the offline page instead
         if (!navigator.onLine && isHtmlRequest(request)) {
             return event.respondWith(caches.match(offlinePage));
         }
         return;
     }
 
+    // Load our application shell when we need a page request or the page itself if blacklisted
     if (isHtmlRequest(request) && !isAjaxRequest(request) && request.url.indexOf('service_worker') === -1 && navigator.onLine) {
-        return event.respondWith(
-            caches.match(request)
-                .then(response => {
-                    if (!response) {
-                        return caches.match(shell);
-                    }
-                    return response;
-                })
-        );
+        if (!isBlacklisted(request.url)) {
+            return event.respondWith(
+                caches.match(request)
+                    .then(response => {
+                        if (!response) {
+                            return caches.match(shell);
+                        }
+                        return response;
+                    })
+            );
+        }
     }
+
 
     if (isHtmlRequest(request) && !isAjaxRequest(request)) {
         return event.respondWith(
@@ -191,45 +180,10 @@ self.addEventListener('fetch', event => {
                 .then(response => {
                     return response || fetch(request)
                             .then(response => {
-                                if (isCachableResponse(response)) {
+                                if (isCachableResponse(response) && !isBlacklisted(response.url)) {
                                     let copy = response.clone();
                                     caches.open(version).then(cache => cache.put(request, copy));
                                 }
-
-                                // Create our fully formed page and store it in cache for repeat views
-                                if (request.url.indexOf('service_worker') !== -1) {
-                                    let copy = response.clone();
-                                    const startFetch = caches.match('/shell-start.html');
-                                    const content = copy.text();
-                                    const endFetch = caches.match('/shell-end.html');
-
-                                    Promise.all([
-                                        startFetch,
-                                        content,
-                                        endFetch
-                                    ]).then(values => {
-                                        return Promise.all([
-                                            values[0].text(),
-                                            values[1],
-                                            values[2].text()
-                                        ])
-                                    }).then(page => {
-                                        let newUrl = removeUrlParam( request.url, 'service_worker=true' );
-                                        page[1] = JSON.parse(page[1]).content;
-
-                                        let newResponse = new Response(
-                                            new Blob(page, {
-                                                type: 'text/html'
-                                            })
-                                        );
-                                        let newRequest = new Request(
-                                            newUrl
-                                        );
-
-                                        caches.open(version).then(cache => cache.put(newRequest, newResponse));
-                                    });
-                                }
-
                                 return response;
                             });
                 })
