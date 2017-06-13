@@ -1,8 +1,19 @@
 define([
     'jquery',
     'Meanbee_PWA/js/app-data',
+    'Meanbee_PWA/js/app-messages',
     'Magento_Customer/js/customer-data'
-], function ( $, appData, customerData ) {
+], function ( $, appData, appMessages, customerData ) {
+
+    $(document).on('ajaxComplete', function ( event, xhr, settings ) {
+        var cookies = $.cookieStorage.get('mage-messages');
+
+        if ( cookies.length ) {
+            appMessages.set( cookies );
+        }
+
+        $.cookieStorage.set('mage-messages', "");
+    });
 
     $(document).on('click', 'a', function ( event ) {
         const url = new URL( event.currentTarget.href );
@@ -18,6 +29,7 @@ define([
 
             router.load( url.href ).then( addHistory ).then(function() {
                 customerData.set( 'messages', {} );
+                appMessages.set( '' );
             });
         }
     });
@@ -32,6 +44,9 @@ define([
 
         const url = new URL( formAction );
         if ( url.origin == location.origin ) {
+            appMessages.set( '' );
+            $.cookieStorage.set('mage-messages', "");
+
             event.preventDefault();
             router.load( url.href, form.serializeArray() ).then( addHistory );
         }
