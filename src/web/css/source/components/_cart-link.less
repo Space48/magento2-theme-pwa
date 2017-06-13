@@ -1,0 +1,39 @@
+.cart-link {
+    &__label,
+    &__count--long {
+        .screenreader();
+    }
+
+    &__icon {
+        display: inline-block;
+        fill: #000;
+        vertical-align: middle;
+        width: 1em;
+    }
+
+    &__counter {
+        font-size: 1.8em;
+        position: relative;
+
+        &.has-items {
+            .cart-link__count {
+                display: inline-block;
+            }
+        }
+    }
+
+    &__count {
+        background-color: @primary-color;
+        border-radius: 50%;
+        color: #fff;
+        display: none;
+        font-size: 1rem;
+        line-height: 1.2;
+        text-align: center;
+        position: absolute;
+        right: -.5rem;
+        top: 0;
+        height: 1.2em;
+        width: 1.2em;
+    }
+}

@@ -5,5 +5,61 @@
 @import "source/_skeleton.less";
 
 @import "source/_shell-loader.less";
+@import "source/_navigation.less";
+@import "source/components/_cart-link.less";
+@import "source/components/_fieldset.less";
+
+.block-authentication,
+.block-search {
+    display: none;
+}
+
+.block-title {
+    font-size: 1.5em;
+    text-align: center;
+    text-transform: uppercase;
+
+    strong {
+        font-weight: 800;
+        letter-spacing: 0.025em;
+    }
+}
+
+.skip {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    height: 1px;
+    width: 1px;
+    text-align: left;
+    overflow: hidden;
+
+    &:active,
+    &:focus,
+    &:hover {
+        left: 0;
+        top: 0;
+        width: auto;
+        height: auto;
+        overflow: visible;
+    }
+}
+
+input.mage-error {
+    border-color: #da2128;
+
+    &:focus {
+        border-color: #da2128;
+    }
+}
+
+div.mage-error {
+    color: #ed1c24;
+}
+
+.modals-wrapper {
+    display: none; // Temp
+}
 
 //@magento_import 'source/_imports.less'; // Gather other modules critical components
+

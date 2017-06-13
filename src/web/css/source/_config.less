@@ -1,13 +1,16 @@
-@border-color: hsl(0, 0%, 87%);
-@border-color-active: hsl(232, 55%, 40%);
+@border-color: hsl(0, 0%, 75%);
+@border-color-active: hsl(0, 0, 0);
 @text-color: hsl(0, 0%, 0%);
-@link-color: hsl(225, 61%, 43%);
+@link-color: hsl(0, 0%, 0%);
 
 @primary-color: hsl(232, 55%, 40%);
 @skeleton-color: hsl(180, 4%, 95%);
 
 @small-breakpoint: 480px;
 @medium-breakpoint: 780px;
+@large-breakpoint: 1200px;
+@extra-large-breakpoint: 1600px;
+@site-max-width: 1680px;
 
 .screenreader() {
     border: 0;
@@ -22,7 +25,8 @@
 }
 
 :root {
-    --site-max-width: 1680px;
+    --site-max-width: @site-max-width;
     --vertical-spacing-unit: 1rem;
     --horizontal-spacing-unit: 1rem;
+    --primary-color: @primary-color;
 }

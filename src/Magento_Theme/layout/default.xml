@@ -5,33 +5,20 @@
         <referenceBlock name="top.links" remove="true" />
         <referenceBlock name="navigation.sections" remove="true" />
         <referenceBlock name="footer" remove="true" />
-        <referenceBlock name="breadcrumbs" remove="true" />
         <referenceBlock name="currency" remove="true" />
-
-        <referenceBlock name="logo">
-            <arguments>
-                <argument name="logo_img_width" xsi:type="number">75</argument>
-                <argument name="logo_img_height" xsi:type="number">75</argument>
-            </arguments>
-        </referenceBlock>
-
-        <referenceContainer name="header-wrapper" htmlClass="page-header-inner content" />
-        <referenceContainer name="footer" htmlClass="page-footer-inner content" />
-
-        <move element="store.menu" destination="page.wrapper" after="header.container" />
-
-        <!-- Create a wrapper for main content -->
-        <referenceContainer name="page.wrapper">
-            <container name="main.wrapper" as="main.wrapper" label="main wrapper" htmlTag="div" htmlClass="page-main-wrapper"/>
-        </referenceContainer>
-
-        <move element="main.content" destination="main.wrapper" />
 
         <referenceBlock name="head.csspreload">
             <arguments>
                 <argument name="assets" xsi:type="array">
-                    <item name="asset.critical" xsi:type="array">
+                    <item name="asset.components" xsi:type="array">
                         <item name="path" xsi:type="string">css/app-components.css</item>
+                        <item name="attributes" xsi:type="array">
+                            <item name="name" xsi:type="string">class</item>
+                            <item name="value" xsi:type="string">preloaded</item>
+                        </item>
+                    </item>
+                    <item name="asset.pages" xsi:type="array">
+                        <item name="path" xsi:type="string">css/app-pages.css</item>
                         <item name="attributes" xsi:type="array">
                             <item name="name" xsi:type="string">class</item>
                             <item name="value" xsi:type="string">preloaded</item>
@@ -40,5 +27,30 @@
                 </argument>
             </arguments>
         </referenceBlock>
+
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_img_width" xsi:type="number">75</argument>
+                <argument name="logo_img_height" xsi:type="number">75</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="header-wrapper" htmlClass="page-header-inner content">
+            <container name="header-wrapper-inner" as="header-wrapper-inner" label="header wrapper inner" htmlTag="div" htmlClass="header-wrapper-inner"/>
+        </referenceContainer>
+
+        <referenceContainer name="footer" htmlClass="page-footer-inner content" />
+        <referenceContainer name="page.messages" htmlClass="messages-wrapper" />
+
+        <move element="page.messages" destination="page.wrapper" after="page.top" />
+        <move element="store.menu" destination="page.wrapper" after="header.container" />
+        <move element="register-link" destination="page.top" before="-" />
+
+        <!-- Create a wrapper for main content -->
+        <referenceContainer name="page.wrapper">
+            <container name="main.wrapper" as="main.wrapper" label="main wrapper" htmlTag="div" htmlClass="page-main-wrapper"/>
+        </referenceContainer>
+
+        <move element="main.content" destination="main.wrapper" />
     </body>
 </page>

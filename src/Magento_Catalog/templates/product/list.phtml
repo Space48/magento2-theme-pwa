@@ -22,7 +22,7 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div></div>
 <?php else: ?>
-    <?php echo $block->getToolbarHtml() ?>
+    <div class="toolbar-top"><?php echo $block->getToolbarHtml() ?></div>
     <?php echo $block->getAdditionalHtml() ?>
     <?php
     if ($block->getMode() == 'grid') {
@@ -116,7 +116,7 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
             <?php endforeach; ?>
         </ol>
     </div>
-    <?php echo $block->getToolbarHtml() ?>
+    <div class="toolbar-bottom"><?php echo $block->getToolbarHtml() ?></div>
     <?php if (!$block->isRedirectToCartEnabled()) : ?>
         <script type="text/x-magento-init">
         {

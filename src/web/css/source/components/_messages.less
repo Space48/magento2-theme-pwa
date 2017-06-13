@@ -1,0 +1,53 @@
+.messages-wrapper {
+    padding: 0 var(--horizontal-spacing-unit);
+}
+
+.messages {
+    margin: 0 auto;
+    max-width: var(--site-max-width);
+}
+
+.message {
+    border-radius: .125em;
+    margin: 1em 0;
+    padding: 1em;
+
+    a {
+        color: currentColor;
+        font-weight: 600;
+    }
+
+    &-success {
+        background-color: hsla(156, 86%, 28%, 0.13);
+        color: #0a8754;
+    }
+
+    &-error {
+        background-color: hsla(358, 73%, 90%, 1);
+        color: #d01345;
+    }
+
+    &-notice {
+        background-color: hsla(213, 64%, 50%, 0.15);
+        color: #2f77d1;
+    }
+
+    &-warning {
+        background-color: hsla(51, 91%, 54%, 0.23);
+        color: #bca109;
+    }
+
+    &-warning-block {
+        &:before {
+            background-color: hsla(51, 91%, 54%, 0.23);
+        }
+    }
+
+    &__body {
+        margin: 0;
+
+        &:before {
+            margin-right: 1em;
+        }
+    }
+}

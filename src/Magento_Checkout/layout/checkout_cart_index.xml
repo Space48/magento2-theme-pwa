@@ -8,5 +8,15 @@
                 </arguments>
             </block>
         </referenceContainer>
+
+        <referenceBlock name="checkout.cart.summary.title">
+            <arguments>
+                <argument translate="true" name="text" xsi:type="string">Order summary</argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="page.main.title" destination="checkout.cart.items" before="-" />
+        <move element="checkout.cart.form" destination="checkout.cart.container" before="cart.summary" />
+        <move element="checkout.cart.coupon" destination="checkout.cart.container" after="cart.summary" />
     </body>
 </page>

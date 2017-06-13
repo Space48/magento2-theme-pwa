@@ -1,0 +1,134 @@
+.products-crosssell {
+    --type-product-item-medium-width: 100% / 3;
+    --type-product-item-large-width: 25%;
+    --type-product-item-xlarge-width: 20%;
+}
+
+.widget-viewed-grid {
+    --type-product-item-medium-width: calc(100% / 3);
+    --type-product-item-large-width: 25%;
+    --type-product-item-xlarge-width: 20%;
+}
+
+.cart-empty {
+    text-align: center;
+}
+
+.cart-empty-heading {
+    margin-bottom: 0;
+}
+
+.checkout-cart-index {
+    .page-title {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: left;
+    }
+
+    .table-caption {
+        display: none;
+    }
+
+    // TODO: Refactor
+    .crosssell {
+        margin: calc(var(--vertical-spacing-unit) ~"*" 2) 0;
+    }
+
+    .crosssell .title {
+        font-size: 1.2em;
+        text-transform: uppercase;
+    }
+
+    .crosssell .title strong {
+        font-weight: 400;
+    }
+
+    .checkout-methods-items {
+        margin: var(--vertical-spacing-unit) 0;
+    }
+
+    .block.discount {
+        max-width: 30em;
+    }
+}
+
+.cart-summary {
+    .primary {
+        width: 100%;
+    }
+
+    .summary.title {
+        display: block;
+        font-size: 1.5em;
+        font-weight: 400;
+        margin: 1em 0;
+        text-transform: uppercase;
+    }
+}
+
+.cart-list {
+    .item {
+        display: flex;
+        padding: var(--vertical-spacing-unit) 0;
+    }
+
+    .item-options {
+        &:after {
+            clear: both;
+        }
+
+        &:before,
+        &:after {
+            content: " ";
+            display: table;
+        }
+
+        dt,
+        dd {
+            float: left;
+            margin: 0;
+        }
+
+        dt {
+            clear: both;
+            margin-right: 3px;
+        }
+
+        dt:after {
+            content: ":";
+        }
+    }
+}
+
+.item-info {
+
+}
+
+.item-image {
+
+}
+
+@media screen and (min-width: @medium-breakpoint) {
+    .cart-container {
+        display: grid;
+        grid-template: 1fr min-content ~"/" 2fr 0.6fr;
+        grid-template-areas: "main sidebar" "main2 sidebar2" "main3 sidebar3";
+        grid-row-gap: var(--vertical-spacing-unit);
+    }
+
+    .cart-summary {
+        grid-area: sidebar;
+    }
+
+    .form-cart {
+        grid-area: main;
+    }
+
+    .gift-options-cart {
+        grid-area: main2;
+    }
+
+    .block.discount {
+        grid-area: main3;
+    }
+}

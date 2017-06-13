@@ -10,13 +10,18 @@
 ?>
 
 <div data-block="minicart" class="minicart-wrapper">
-    <a class="action showcart" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
+    <a class="action showcart cart-link" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
        data-bind="scope: 'minicart_content'">
-        <span class="text"><?php /* @escapeNotVerified */ echo __('My Cart'); ?></span>
-        <span class="counter qty empty"
-              data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
-            <span class="counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
-            <span class="counter-label">
+        <span class="text cart-link__label"><?php /* @escapeNotVerified */ echo __('My Cart'); ?></span>
+        <span class="counter qty cart-link__counter"
+              data-bind="css: { 'has-items': !!getCartParam('summary_count') == true }, blockLoader: isLoading">
+            <span class="cart-link__icon">
+                <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/basket.svg') ?>
+            </span>
+            <span class="counter-number cart-link__count">
+                <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
+            </span>
+            <span class="counter-label cart-link__count--long">
             <!-- ko if: getCartParam('summary_count') -->
                 <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
                 <!-- ko i18n: 'items' --><!-- /ko -->

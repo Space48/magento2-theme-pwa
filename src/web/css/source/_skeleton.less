@@ -1,3 +1,7 @@
+.columns {
+    padding-bottom: 5rem;
+}
+
 @media screen and (min-width: @medium-breakpoint) {
     .columns {
         display: grid;
@@ -17,7 +21,6 @@
 
     .sidebar-additional {
         grid-area: sidebar-additional;
-
     }
 }
 
@@ -32,7 +35,7 @@
 .page-layout-2columns-left {
     @media screen and (min-width: @medium-breakpoint) {
         .columns {
-            grid-template: min-content 1fr ~"/" 1fr 2fr;
+            grid-template: min-content 1fr ~"/" 0.6fr 2fr;
             grid-template-areas: "sidebar main" "sidebar-additional main";
         }
     }
@@ -41,7 +44,7 @@
 .page-layout-2columns-right {
     @media screen and (min-width: @medium-breakpoint) {
         .columns {
-            grid-template: min-content 1fr ~"/" 2fr 1fr;
+            grid-template: min-content 1fr ~"/" 2fr 0.6fr;
             grid-template-areas: "main sidebar" "main sidebar-additional";
         }
     }
@@ -53,9 +56,21 @@
     margin-right: auto;
 }
 
+.page-header-inner {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    max-width: var(--site-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
 
-.sidebar,
-.main {
-    padding: var(--vertical-spacing-unit);
+    .logo {
+        width: 2em;
+    }
 }
 
+.header-wrapper-inner {
+    display: flex;
+    align-items: center;
+}

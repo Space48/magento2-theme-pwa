@@ -1,0 +1,35 @@
+button.primary {
+    background-color: @primary-color;
+    border-color: @primary-color;
+
+    &:hover,
+    &:focus {
+
+    }
+}
+
+.button-wishlist {
+    background-color: hsl(0, 0, 85%);
+    border: 1px solid hsl(0, 0, 85%);
+    display: inline-block;
+    font-size: 1.1em;
+    line-height: 1.15;
+    padding: .75rem;
+    transition: stroke-width .5s ease-in-out;
+
+    svg {
+        width: 1em;
+    }
+
+    &:hover,
+    &:focus {
+        svg {
+            stroke: red;
+            stroke-width: 2px;
+        }
+    }
+
+    .button-label {
+        .screenreader();
+    }
+}

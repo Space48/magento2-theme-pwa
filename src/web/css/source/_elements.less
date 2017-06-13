@@ -12,19 +12,27 @@
 
 html,
 body {
-    background-color: #f8f8f8;
     box-sizing: border-box;
     color: @text-color;
-    font: 400 14px/1.4 Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font: 400 15px/1.5 'Source Sans Pro', sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     height: 100%;
     text-rendering: optimizeLegibility;
+
+    @media screen and (min-width: @medium-breakpoint) {
+        font-size: 14px;
+    }
+}
+
+::selection {
+    background-color: hsl(0, 0, 0);
+    color: hsl(255, 100%, 100%);
 }
 
 body {
     .fonts-loaded & {
-        font-family: "Lato", Verdana, sans-serif;
+        font-family: 'Source Sans Pro', sans-serif;
     }
 }
 
@@ -68,23 +76,24 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: normal;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
     margin: 2em 0;
 }
 
 h1 {
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 400;
 }
 
 h2 {
     font-size: 1.8rem;
-    font-weight: 900;
+    font-weight: 400;
 }
 
 h3 {
     font-size: 1.6rem;
-    font-weight: 900;
+    font-weight: 400;
 }
 
 h4 {
@@ -101,8 +110,15 @@ h6 {
 
 a {
     color: @link-color;
-    -webkit-tap-highlight-color: transparent;
     text-decoration: none;
+    transition: .3s color ease-in-out;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover,
+    &:focus {
+        color: @primary-color;
+        outline: none;
+    }
 
     &:active {
         outline: 0;
@@ -122,7 +138,7 @@ fieldset {
 
 label {
     display: inline-block;
-    margin: var(--vertical-spacing-unit) 0;
+    margin: .25em 0;
 }
 
 input[type="text"],
@@ -144,9 +160,9 @@ button {
     -webkit-appearance: none;
     border: 1px solid @border-color;
     border-radius: 0;
-    font-family: "Lato", sans-serif; // Required due to yosemite overwriting unless explicitly defined
+    font-family: 'Source Sans Pro', sans-serif; // Required due to yosemite overwriting unless explicitly defined
     font-size: 1rem;
-    padding: 1rem;
+    padding: .75rem;
 
     &:focus {
         transition: border-color .2s ease-in-out;
@@ -177,6 +193,12 @@ textarea {
     }
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 input[type="checkbox"]~label {
     margin-left: 5px;
 }
@@ -201,13 +223,19 @@ embed {
     max-width: 100%;
 }
 
-button {
+button,
+a.button {
     -webkit-tap-highlight-color: transparent;
-    border: 0;
-    background-color: @primary-color;
-    color: #fff;
+    border-color: hsl(0, 0, 0);
+    background-color: hsl(0, 0, 0);
+    color: hsl(255, 100%, 100%);
     display: inline-block;
-    padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
+    font-size: 1.1em;
+    font-weight: 600;
+    outline: none;
+    min-width: 180px;
+    padding: .75rem;
+    text-align: center;
     user-select: none;
 
     &::-moz-focus-inner {
@@ -216,14 +244,19 @@ button {
 
     &:focus,
     &:hover {
-        background-color: darken(@primary-color, 5%);
+        background-color: lighten(hsl(0, 0, 0), 25%);
+        border-color: hsl(0, 0, 0);
     }
 
     &:active {
-        background-color: darken(@primary-color, 10%);
+        background-color: hsl(255, 100%, 100%);
+        color: hsl(0, 0, 0);
     }
 
     &:disabled {
+        background-color: hsl(0, 0, 0);
+        color: hsl(255, 100%, 100%);
+        cursor: not-allowed;
         opacity: .5;
     }
 }
@@ -268,9 +301,14 @@ hr {
 }
 
 strong {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 em {
     font-style: italic;
+}
+
+table {
+    text-align: left;
+    width: 100%;
 }

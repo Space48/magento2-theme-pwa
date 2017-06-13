@@ -1,0 +1,33 @@
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="view.addto.compare" remove="true" />
+        <referenceBlock name="product.info.mailto" remove="true" />
+        <referenceBlock name="product.info.stock.sku" remove="true" />
+        <referenceBlock name="product.info.review" remove="true" />
+        <referenceBlock name="reviews.tab" remove="true" />
+        <referenceBlock name="product.info.overview" remove="true" />
+
+        <move element="product.info.description" destination="product.info.main" after="product.info.extrahint"/>
+        <move element="page.main.title" destination="product.info.main" before="-" />
+        <move element="product.info.social" destination="product.info.options.wrapper.bottom" after="product.info.addtocart.additional" />
+        <move element="product.info.media" destination="product.main.wrapper" before="product.info.main" />
+        <move element="product.info.main" destination="product.main.wrapper" />
+
+        <!-- Create a wrapper main product content -->
+        <referenceContainer name="content">
+            <container name="product.main.wrapper" as="product.main.wrapper" label="product wrapper" htmlTag="div" htmlClass="product-main-wrapper" before="-"/>
+        </referenceContainer>
+
+        <referenceBlock name="product.info.description">
+            <arguments>
+                <argument name="css_class" xsi:type="string">product-description</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceBlock name="product.attributes">
+            <arguments>
+                <argument translate="true" name="title" xsi:type="string"></argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

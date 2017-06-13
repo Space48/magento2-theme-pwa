@@ -1,0 +1,24 @@
+.modes {
+    &-mode {
+        display: inline-block;
+    }
+}
+
+.modes-label {
+    .screenreader();
+}
+
+.mode-grid {
+    &:before {
+        background: transparent url(../images/icons/grid.svg) no-repeat center;
+        content: '';
+        display: inline-block;
+        height: 2em;
+        vertical-align: middle;
+        width: 2em;
+    }
+
+    span {
+        .screenreader();
+    }
+}
