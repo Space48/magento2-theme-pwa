@@ -1,0 +1,16 @@
+<div class="app__content" data-block="app-content" data-bind="scope: 'app_content'">
+    <div data-bind="html: getContent()"></div>
+    <script type="text/x-magento-init">
+    {
+        "[data-block='app-content']": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "app_content": {
+                        "component": "Meanbee_PWA/js/view/app-content"
+                    }
+                }
+            }
+        }
+    }
+    </script>
+</div>
