@@ -6,5 +6,11 @@
                 <block class="Magento\Theme\Block\Html\Pager" name="product_list_toolbar_bottom_pager" as="product_list_toolbar_pager"/>
             </block>
         </referenceBlock>
+
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="add_base_attribute_aria" xsi:type="string">page-title-heading</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
