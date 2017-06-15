@@ -5,19 +5,7 @@ define([
     'Magento_Customer/js/customer-data'
 ], function ( $, appData, appMessages, customerData ) {
 
-    $(document).on('ajaxComplete', function ( event, xhr, settings ) {
-        var cookies = $.cookieStorage.get('mage-messages');
-
-        if ( cookies.length ) {
-            appMessages.set( cookies );
-        }
-
-        $.cookieStorage.set('mage-messages', "");
-    });
-
-    $(document).on('click', 'a', function ( event ) {
-        const url = new URL( event.currentTarget.href );
-
+    function clickNavigate( url ) {
         if ( url.origin == location.origin ) {
             event.preventDefault();
 
@@ -32,6 +20,37 @@ define([
                 appMessages.set( '' );
             });
         }
+    };
+
+    function addHistory( data ) {
+        if ( data.meta.url !== document.location.href ) {
+            history.pushState( {}, data.meta.title, data.meta.url );
+        }
+        return data;
+    };
+
+    $(document).on('locationChange', function( event, data ) {
+        if ( data && data.href ) {
+            const url = new URL( data.href );
+            clickNavigate( url );
+        }
+    });
+
+    $(document).on('click', 'a', function ( event ) {
+        if ( event.currentTarget.href ) {
+            const url = new URL(event.currentTarget.href);
+            clickNavigate( url );
+        }
+    });
+
+    $(document).on('ajaxComplete', function ( event, xhr, settings ) {
+        var cookies = $.cookieStorage.get('mage-messages');
+
+        if ( cookies.length ) {
+            appMessages.set( cookies );
+        }
+
+        $.cookieStorage.set('mage-messages', "");
     });
 
     $(document).on('submit', function ( event ) {
@@ -63,13 +82,6 @@ define([
             }
         }
     });
-
-    function addHistory( data ) {
-        if ( data.meta.url !== document.location.href ) {
-            history.pushState( {}, data.meta.title, data.meta.url );
-        }
-        return data;
-    };
 
     var router = {
         state: {
