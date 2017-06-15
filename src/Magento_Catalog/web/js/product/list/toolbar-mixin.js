@@ -46,7 +46,10 @@ define([
                 paramData = $.param(paramData);
 
                 this.element.trigger('locationChange', {
-                    href: baseUrl + (paramData.length ? '?' + paramData : '')
+                    href: baseUrl + (paramData.length ? '?' + paramData : ''),
+                    func: function() {
+                        location.href = baseUrl + (paramData.length ? '?' + paramData : '');
+                    }
                 });
             }
         });
