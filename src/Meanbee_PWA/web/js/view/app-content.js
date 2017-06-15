@@ -12,7 +12,7 @@ define([
         // Clean the app target of ko descendant bindings
         // so that we can create a new descendant binding context
         // for the updated content
-        if ( target.length ) {
+        if ( target ) {
             ko.cleanNode( target );
             ko.applyBindings( {}, target );
         }
