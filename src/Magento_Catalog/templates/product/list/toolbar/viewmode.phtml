@@ -14,13 +14,15 @@
  * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
  */
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
+$_modesLabelId = uniqid('modes-label-');
 ?>
 <?php if ($block->isEnabledViewSwitcher()): ?>
     <div class="modes">
         <?php $_modes = $block->getModes(); ?>
         <?php if ($_modes && count($_modes) > 1): ?>
-            <strong class="modes-label" id="<?php echo uniqid('modes-label-') ?>"><?php /* @escapeNotVerified */ echo __('View as') ?></strong>
+            <strong class="modes-label" id="<?php echo $_modesLabelId ?>"><?php /* @escapeNotVerified */ echo __('View as') ?></strong>
             <?php foreach ($block->getModes() as $_code => $_label): ?>
+                <?php $_modesId = uniqid(sprintf('mode-%s', strtolower($_code))) ?>
                 <?php if ($block->isModeActive($_code)): ?>
                     <strong title="<?php /* @escapeNotVerified */ echo $_label ?>"
                             class="modes-mode active mode-<?php /* @escapeNotVerified */ echo strtolower($_code); ?>"
@@ -33,8 +35,8 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
                        href="#"
                        data-role="mode-switcher"
                        data-value="<?php /* @escapeNotVerified */ echo strtolower($_code); ?>"
-                       id="<?php echo uniqid(sprintf('mode-%s-', strtolower($_code))); ?>"
-                       aria-labelledby="modes-label mode-<?php /* @escapeNotVerified */ echo strtolower($_code); ?>">
+                       id="<?php echo $_modesId; ?>"
+                       aria-labelledby="<?php echo $_modesLabelId ?> <?php echo $_modesId ?>">
                         <span><?php /* @escapeNotVerified */ echo $_label ?></span>
                     </a>
                 <?php endif; ?>
