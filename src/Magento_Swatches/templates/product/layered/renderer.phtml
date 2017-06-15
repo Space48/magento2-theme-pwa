@@ -14,6 +14,7 @@
     <div class="swatch-attribute-options clearfix">
         <?php foreach ($swatchData['options'] as $option => $label): ?>
             <a href="<?php /* @escapeNotVerified */ echo $label['link'] ?>" class="swatch-option-link-layered">
+                <span class="swatch-option__text"><?php echo $label['label'] ?></span>
                 <?php if (isset($swatchData['swatches'][$option]['type'])) { ?>
                     <?php switch ($swatchData['swatches'][$option]['type']) {
                         case '3':
