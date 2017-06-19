@@ -1,9 +1,10 @@
 define([
     'jquery',
+    'underscore',
     'Meanbee_PWA/js/app-data',
     'Meanbee_PWA/js/app-messages',
     'Magento_Customer/js/customer-data'
-], function ( $, appData, appMessages, customerData ) {
+], function ( $, _, appData, appMessages, customerData ) {
 
     function clickNavigate( url ) {
         if ( url.origin == location.origin ) {
@@ -53,7 +54,15 @@ define([
         $.cookieStorage.set('mage-messages', "");
     });
 
-    $(document).on('submit', function ( event ) {
+    // Pass the buttons name as additional data to form submits
+    $(document).on('click', 'form button, form input[type="submit"]', function ( event ) {
+        $(this.form).trigger('submit', {
+            [this.name]: "1"
+        });
+        return false;
+    });
+    
+    $(document).on('submit', function ( event, data ) {
         const form = $( event.target ).is( 'form' ) ? $( event.target ) : false;
         const formAction = form.prop( 'action' ) ? form.prop( 'action' ) : false;
 
@@ -63,11 +72,18 @@ define([
 
         const url = new URL( formAction );
         if ( url.origin == location.origin ) {
+            event.preventDefault();
+
             appMessages.set( '' );
             $.cookieStorage.set('mage-messages', "");
-
-            event.preventDefault();
-            router.load( url.href, form.serializeArray() ).then( addHistory );
+            
+            var formData = form.serializeArray();
+            if ( data ) {
+                _.each( data, function ( value, key ) {
+                    formData.push( { name: key, value: value } );
+                });
+            }
+            router.load( url.href, formData ).then( addHistory );
         }
     });
 
