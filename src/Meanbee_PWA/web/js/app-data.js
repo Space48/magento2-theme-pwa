@@ -55,20 +55,37 @@ define([
         },
 
         /**
+         * @param {Array} array - Array of objects
+         * @return {FormData}
+         */
+        serializedArrayToFormData: function( array ) {
+            let formData = new FormData();
+
+            _.each( array, function( obj, key ) {
+                if ( obj['name'] && obj['value'] ) {
+                    formData.append( obj['name'], obj['value'] );
+                }
+            });
+
+            return formData;
+        },
+
+        /**
          * @param {String} url
-         * @param {Object} data
+         * @param {Array} data - Serialized array of data
          * @return {*}
          */
         postToServer: function( url, data ) {
             data.push( { name: 'service_worker', value: true } );
+            let body = this.serializedArrayToFormData( data );
 
-            return $.ajax({
-                url: url,
+            return fetch( url, {
                 method: 'post',
-                data: data
+                body: body,
+                credentials: 'include'
             })
-            .fail(function( jqXHR ) {
-                return new Error( jqXHR );
+            .catch(function( error ) {
+                return new Error( error );
             });
         },
 
@@ -77,16 +94,18 @@ define([
          * @return {*}
          */
         getFromServer: function( url ) {
-            return $.ajax({
-                url: url,
-                dataType: 'JSON',
-                data: {
-                    service_worker: 'true'
-                },
-                cache: true
+            var url = new URL( url );
+            var params = {
+                'service_worker': true
+            };
+            Object.keys( params ).forEach( key => url.searchParams.append( key, params[key] ) );
+
+            return fetch( url , {
+                method: 'get',
+                credentials: 'include'
             })
-            .fail(function ( jqXHR ) {
-                return new Error( jqXHR );
+            .catch(function( error ) {
+                return new Error( error );
             });
         },
 
@@ -96,39 +115,57 @@ define([
          * @param {Object} jqXHR
          * @return {*}
          */
-        handleResponse: function( response, textStatus, jqXHR ) {
-            try {
-                var data = JSON.parse( jqXHR.responseText );
-
-                if ( data['content'] ) {
-                    return data;
-                }
-
-                if ( data['backUrl'] ) {
-                    return this.getFromServer.call( this, data['backUrl'] );
-                }
-
-                return this.getFromServer.call( this, document.location.href );
-            } catch( e ) {
-                return this.getFromServer( document.location.href );
+        handleJson: function( json ) {
+            if ( json['content'] ) {
+                return json;
             }
+
+            if ( json['backUrl'] ) {
+                return this.getFromServer( json['backUrl'] );
+            }
+            
+            return false;
+        },
+
+        /**
+         * @param {String} error
+         * @return {Object}
+         */
+        handleError: function( error ) {
+            throw new Error( error );
+        },
+
+        /**
+         * @param {Object} response
+         * @return {*}
+         */
+        handleRedirects: function( response ) {
+            if ( response.redirected ) {
+                return this.getFromServer( response.url ).then( this.handleRedirects.bind( this ) );
+            }
+
+            return response.json();
         },
 
         /**
          * @param {String} url
-         * @param {Object} data
+         * @param {Array} data - Serialized array of data objects
          * @return {*}
          */
-        reloadPost: function( url, data ) {
-            return this.postToServer( url, data ).then( this.handleResponse.bind( this ) ).then( this.update.bind( this ) );
-        },
-
-        /**
-         * @param {String} url
-         * @return {*}
-         */
-        reloadFetch: function( url ) {
-            return this.getFromServer( url ).then( this.update.bind( this ) );
+        fetch: function( url, data ) {
+            let req;
+            
+            if ( data ) {
+                req = this.postToServer( url, data );
+            } else {
+                req = this.getFromServer( url );
+            }
+            
+            return req
+                .then( this.handleRedirects.bind( this ) )
+                .then( this.handleJson.bind( this ) )
+                .then( this.update.bind( this ) )
+                .catch( this.handleError.bind( this ) );
         }
     };
 

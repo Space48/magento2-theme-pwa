@@ -37,7 +37,7 @@ define([
                 reload();
             }.bind( this ));
 
-            appData.reloadFetch( document.location );
+            appData.fetch( document.location );
 
             return this._super();
         },

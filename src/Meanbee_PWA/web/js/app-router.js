@@ -16,7 +16,7 @@ define([
                 document.location.href
             );
 
-            router.load( url.href ).then( addHistory ).then(function() {
+            router.fetch( url.href ).then( addHistory ).then(function() {
                 customerData.set( 'messages', {} );
                 appMessages.set( '' );
             });
@@ -44,7 +44,7 @@ define([
         }
     });
 
-    $(document).on('ajaxComplete', function ( event, xhr, settings ) {
+    $(document).on('ajaxComplete router.fetchComplete', function ( event, xhr, settings ) {
         var cookies = $.cookieStorage.get('mage-messages');
 
         if ( cookies.length ) {
@@ -83,12 +83,12 @@ define([
                     formData.push( { name: key, value: value } );
                 });
             }
-            router.load( url.href, formData ).then( addHistory );
+            router.fetch( url.href, formData ).then( addHistory );
         }
     });
 
     window.addEventListener('popstate', function ( event ) {
-        router.load( document.location.href ).then( scroll.bind( null, event ) ).then(function() {
+        router.fetch( document.location.href ).then( scroll.bind( null, event ) ).then(function() {
             customerData.set( 'messages', {} );
         });
 
@@ -132,7 +132,13 @@ define([
          * @param {Object} data
          */
         handleLoadResponse: function( data ) {
-            $('body').removeClass('is-loading').addClass('has-loaded');
+            let body = $('body');
+            body.removeClass('is-loading').addClass('has-loaded');
+
+            // Re-sync our form keys
+            body.formKey('destroy').formKey();
+            
+            body.trigger('router.fetchComplete');
             return data;
         },
 
@@ -140,14 +146,10 @@ define([
          * @param {String} url
          * @param {Object} [data=null]
          */
-        load: function( url, data = null ) {
+        fetch: function( url, data = null ) {
             $('body').removeClass('has-loaded').addClass('is-loading');
 
-            if ( data ) {
-                return appData.reloadPost( url, data ).then( this.handleLoadResponse );
-            }
-
-            return appData.reloadFetch( url ).then( this.handleLoadResponse );
+            return appData.fetch( url, data ).then( this.handleLoadResponse );
         },
 
         /**
