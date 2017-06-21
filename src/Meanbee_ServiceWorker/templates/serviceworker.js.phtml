@@ -1,192 +1,99 @@
 <?php /** @var \Meanbee\ServiceWorker\Block\Js $block */ ?>
 'use strict';
 
-const version = '<?php echo $block->getVersion() ?>';
-const offlinePage = '<?php echo $block->getOfflinePageUrl() ?>';
-const shell = '<?php echo $block->getUrl('shell') ?>';
-const urlBlacklist = <?php echo json_encode($block->getUrlBlacklist()) ?>;
-
-// Functions
+// Import and initialise external dependencies
 // #####################################
 
-/**
- * Add all of the static pages and assets to the cache.
- *
- * @returns {*|Promise.<TResult>}
- */
-function updateStaticCache() {
-    return caches.open(version)
-        .then(cache => {
-            return cache.addAll([
-                offlinePage,
-                shell,
-                '<?php echo $block->getViewFileUrl('css/app-shell.css') ?>'
-            ])
-        });
-}
+<?php if ($externalScripts = $block->getExternalScriptUrls()): ?>
+importScripts(<?php echo implode(", ", array_map(function ($url) { return "'{$url}'"; }, $externalScripts)) ?>);
+<?php endif; ?>
 
-/**
- * Delete caches that do not match the current version of the service worker.
- *
- * @returns {*|Promise.<TResult>}
- */
-function clearOldCaches() {
-    return caches.keys().then(keys => {
-        return Promise.all(
-            keys
-                .filter(key => key.indexOf(version) !== 0)
-                .map(key => caches.delete(key))
-        );
+<?php if ($block->isGaOfflineEnabled()): ?>
+workbox.googleAnalytics.initialize();
+<?php endif; ?>
+
+// Initialize the workbox service worker
+// #####################################
+
+const wbsw = new WorkboxSW({
+    clientsClaim: true,
+    skipWaiting: true,
+});
+
+// Pre-cache fallback responses
+// #####################################
+
+const OFFLINE_PAGE_URL = '<?php echo $block->getOfflinePageUrl() ?>';
+const SHELL = '<?php echo $block->getUrl('shell') ?>';
+
+wbsw.precache([
+    {
+        url: OFFLINE_PAGE_URL,
+        revision: '<?php echo $block->getVersion() ?>',
+    },
+    {
+        url: SHELL,
+        revision: '<?php echo $block->getVersion() ?>'
+    }
+]);
+
+// Serve assets using cache-first strategy
+// #####################################
+
+wbsw.router.registerRoute(/\.(png|jpeg|jpg|gif)$/, wbsw.strategies.cacheFirst());
+wbsw.router.registerRoute(/\.(js|css)$/, wbsw.strategies.cacheFirst());
+
+// Return our app shell for navigate events
+// #####################################
+wbsw.router.registerNavigationRoute(SHELL);
+
+// Serve paths with configured custom strategies
+// #####################################
+
+const custom_strategies = <?php echo $block->jsonEncode($block->getCustomStrategies()) ?>;
+
+for (let route of custom_strategies) {
+    wbsw.router.registerRoute(route.path, ({event}) => {
+        return wbsw.strategies[route.strategy]().handle({event})
+            .then((response) => {
+                if (!response && event.request.mode == 'navigate') {
+                    return caches.match(OFFLINE_PAGE_URL);
+                }
+                return response;
+            })
+            .catch(() => event.request.mode == 'navigate' ? caches.match(OFFLINE_PAGE_URL) : Response.error());
     });
 }
 
-/**
- * Check if the given request is an ajax request
- *
- * @param {Request} request
- * @returns {boolean}
- */
-function isAjaxRequest(request) {
-    return request.headers.get('X-Requested-With') && request.headers.get('X-Requested-With').indexOf('XMLHttpRequest') !== -1;
-}
-
-/**
- * Check if the given request is expecting a HTML page returned.
- *
- * @param {Request} request
- * @returns {boolean}
- */
-function isHtmlRequest(request) {
-    return request.headers.get('Accept').indexOf('text/html') !== -1;
-}
-
-/**
- * Check if the given URL matches any of the blacklist URL prefixes.
- *
- * @param {string} url
- * @returns {boolean}
- */
-function isBlacklisted(url) {
-    let prefix_match = urlBlacklist["prefix_match"].filter(bl => url.indexOf(bl) == 0).length > 0;
-    let full_match = urlBlacklist["full_match"].filter(bl => url == bl).length > 0;
-    return prefix_match || full_match;
-}
-
-/**
- * Return the response if it can be cached, null otherwise.
- *
- * @param {Response} response
- * @returns {boolean}
- */
-function isCachableResponse(response) {
-    return response && response.ok;
-}
-
-/**
- * Return the given URL without the given parameter
- *
- * @param {string} url
- * @param {string} param
- * @returns {string}
- */
-function removeUrlParam(url, param) {
-    let startIndex = url.indexOf(param);
-    let newUrl = '';
-
-    if ( url.indexOf('&') == -1 ) {
-        newUrl += url.slice(0, startIndex -1 );
-    } else {
-        newUrl += url.slice(0, startIndex);
-    }
-
-    newUrl += url.slice(startIndex + param.length, url.length);
-    return newUrl;
-}
-
-// Install
+// Set default strategies
 // #####################################
 
-self.addEventListener('install', event => {
-    event.waitUntil(
-        updateStaticCache()
-            .then(() => self.skipWaiting())
-    );
-});
-
-// Activate
-// #####################################
-
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        clearOldCaches()
-            .then(() => self.clients.claim())
-    );
-});
-
-// Fetch
-// #####################################
-
-self.addEventListener('fetch', event => {
-    let request = event.request;
-
-    // If offline and expecting a HTML page not through AJAX, then show the offline page
-    if (request.method !== 'GET') {
-        if (!navigator.onLine && isHtmlRequest(request)) {
-            return event.respondWith(caches.match(offlinePage));
+wbsw.router.setDefaultHandler({
+    handler: ({event}) => {
+        switch (event.request.method) {
+            case 'GET':
+                // For GET requests, use network-first with offline page fallback
+                return wbsw.strategies.networkFirst().handle({event})
+                        .then((response) => {
+                        if (!response && event.request.mode == 'navigate') {
+                    return caches.match(OFFLINE_PAGE_URL);
+                }
+                return response;
+            });
+            case 'POST':
+                // For POST requests, use network-only with offline page fallback
+                return wbsw.strategies.networkOnly().handle({event})
+                    .catch(() => event.request.mode == 'navigate' ? caches.match(OFFLINE_PAGE_URL) : Response.error());
+            default:
+                // Use network-only for all other request types
+                return wbsw.strategies.networkOnly().handle({event});
         }
-        return;
-    }
-
-    // Load our application shell when we need a page request or the page itself if blacklisted
-    if (isHtmlRequest(request) && !isAjaxRequest(request) && request.url.indexOf('service_worker') === -1 && navigator.onLine) {
-        if (!isBlacklisted(request.url)) {
-            return event.respondWith(
-                caches.match(request)
-                    .then(response => {
-                        if (!response) {
-                            return caches.match(shell);
-                        }
-                        return response;
-                    })
-            );
-        }
-    }
-
-
-    if (isHtmlRequest(request) && !isAjaxRequest(request)) {
-        return event.respondWith(
-            fetch(request)
-                .then(response => {
-                    if (isCachableResponse(response) && !isBlacklisted(response.url)) {
-                        let copy = response.clone();
-                        caches.open(version).then(cache => cache.put(request, copy));
-                    }
-                    return response;
-                })
-                .catch(() => {
-                    return caches.match(request)
-                        .then(response => {
-                            if (!response && request.mode == 'navigate') {
-                                return caches.match(offlinePage);
-                            }
-                            return response;
-                        });
-                })
-        );
-    } else {
-        // For asset requests, get from cache, otherwise fetch from the network
-        return event.respondWith(
-            caches.match(request)
-                .then(response => {
-                    return response || fetch(request)
-                            .then(response => {
-                                if (isCachableResponse(response) && !isBlacklisted(response.url)) {
-                                    let copy = response.clone();
-                                    caches.open(version).then(cache => cache.put(request, copy));
-                                }
-                                return response;
-                            });
-                })
-        );
-    }
+    },
 });
+
+<?php if ($childHtml = $block->getChildHtml()): ?>
+// Extensions
+// #####################################
+
+<?php echo $childHtml ?>
+<?php endif; ?>
