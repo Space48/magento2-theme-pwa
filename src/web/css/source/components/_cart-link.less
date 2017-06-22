@@ -1,17 +1,23 @@
 .cart-link {
+    display: block;
+
     &__label,
     &__count--long {
         .screenreader();
     }
 
     &__icon {
-        display: inline-block;
+        display: block;
         fill: #000;
-        vertical-align: middle;
         width: 1em;
+
+        svg {
+            display: block;
+        }
     }
 
     &__counter {
+        display: block;
         font-size: 1.8em;
         position: relative;
 
@@ -27,13 +33,13 @@
         border-radius: 50%;
         color: #fff;
         display: none;
-        font-size: 1rem;
-        line-height: 1.2;
+        font-size: .75rem;
+        line-height: 1.5;
         text-align: center;
         position: absolute;
-        right: -.5rem;
-        top: 0;
-        height: 1.2em;
-        width: 1.2em;
+        right: -.5em;
+        top: -.5em;
+        height: 1.5em;
+        width: 1.5em;
     }
 }

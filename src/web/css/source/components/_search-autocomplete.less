@@ -1,0 +1,28 @@
+.search-autocomplete {
+    width: 100% !important;
+
+    li {
+        cursor: pointer;
+        padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
+
+        &:focus,
+        &:hover,
+        &.selected {
+            background-color: darken(@skeleton-color, 10%);
+        }
+    }
+
+    .amount {
+        display: none;
+    }
+}
+
+.qs-option-name {
+    font-weight: 600;
+
+    mark {
+        background-color: transparent;
+        color: inherit;
+        font-weight: 400;
+    }
+}

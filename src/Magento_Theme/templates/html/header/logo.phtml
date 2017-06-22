@@ -11,7 +11,10 @@
  */
 ?>
 <?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
-<span data-action="toggle-nav" class="action nav-toggle"><span><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span></span>
+<span data-action="toggle-nav" class="action nav-toggle">
+    <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/menu.svg') ?>
+    <span class="nav-toggle__label"><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span>
+</span>
 <?php if ($block->isHomePage()):?>
 <strong class="logo">
     <?php else: ?>

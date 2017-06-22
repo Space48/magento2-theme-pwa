@@ -12,40 +12,50 @@
 $helper = $this->helper('Magento\Search\Helper\Data');
 ?>
 <div class="block block-search">
-    <div class="block block-title"><strong><?php /* @escapeNotVerified */ echo __('Search'); ?></strong></div>
     <div class="block block-content">
         <form class="form minisearch" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
+            <a href="#minisearch-body" class="minisearch__trigger"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/search.svg') ?></a>
             <div class="field search">
-                <label class="label" for="search" data-role="minisearch-label">
+                <label class="label minisearch__label" for="search" data-role="minisearch-label">
                     <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
                 </label>
-                <div class="control">
-                    <input id="search"
-                           data-mage-init='{"quickSearch":{
-                                "formSelector":"#search_mini_form",
-                                "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest', ['_secure' => $block->getRequest()->isSecure()]); ?>",
-                                "destinationSelector":"#search_autocomplete"}
-                           }'
-                           type="text"
-                           name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
-                           value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
-                           placeholder="<?php /* @escapeNotVerified */ echo __('Search entire store here...'); ?>"
-                           class="input-text"
-                           maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
-                           role="combobox"
-                           aria-haspopup="false"
-                           aria-autocomplete="both"
-                           autocomplete="off"/>
-                    <div id="search_autocomplete" class="search-autocomplete"></div>
-                    <?php echo $block->getChildHtml() ?>
+                <div class="minisearch__body" id="minisearch-body">
+                    <div class="control">
+                        <a href="#" class="minisearch__back">
+                            <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/back.svg') ?>
+                        </a>
+                        <div class="minisearch__field">
+                            <input id="search"
+                                   data-mage-init='{"quickSearch":{
+                                        "formSelector":"#search_mini_form",
+                                        "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest', ['_secure' => $block->getRequest()->isSecure()]); ?>",
+                                        "destinationSelector":"#search_autocomplete",
+                                        "template": "<li class=\"<%- data.row_class %>\" id=\"qs-option-<%- data.index %>\" role=\"option\"><span class=\"qs-option-name\"><% _(data.title).each(function(title) { if (title.match) { %><mark><%- title.string %><\/mark><% } else { %><%- title.string %><% } }) %><\/span><span aria-hidden=\"true\" class=\"amount\"><%- data.num_results %><\/span><\/li>"
+                                        }
+                                   }'
+                                   type="search"
+                                   name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
+                                   value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
+                                   placeholder="<?php /* @escapeNotVerified */ echo __('Search'); ?>"
+                                   class="input-text"
+                                   maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
+                                   role="combobox"
+                                   aria-haspopup="false"
+                                   aria-autocomplete="both"
+                                   autocomplete="off"/>
+                            <div id="search_autocomplete" class="search-autocomplete"></div>
+                        </div>
+                        <a href="#" class="minisearch__clear"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/clear.svg') ?></a>
+                        <?php echo $block->getChildHtml() ?>
+                    </div>
+                    <div class="actions">
+                        <button type="submit"
+                                title="<?php echo $block->escapeHtml(__('Search')) ?>"
+                                class="action search">
+                            <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="actions">
-                <button type="submit"
-                        title="<?php echo $block->escapeHtml(__('Search')) ?>"
-                        class="action search">
-                    <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
-                </button>
             </div>
         </form>
     </div>

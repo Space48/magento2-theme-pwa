@@ -35,8 +35,11 @@
             </arguments>
         </referenceBlock>
 
+        <move element="logo" destination="header-primary" />
+
         <referenceContainer name="header-wrapper" htmlClass="page-header-inner content">
-            <container name="header-wrapper-inner" as="header-wrapper-inner" label="header wrapper inner" htmlTag="div" htmlClass="header-wrapper-inner"/>
+            <container name="header-primary" as="header-primary" label="header primary" htmlTag="div" htmlClass="header-primary" before="-"/>
+            <container name="header-additional-actions" as="header-additional-actions" label="header additional actions" htmlTag="div" htmlClass="header-additional-actions"/>
         </referenceContainer>
 
         <referenceContainer name="footer" htmlClass="page-footer-inner content" />
