@@ -32,7 +32,7 @@
   },
   "require": {
     "magento/framework": "^100.1.4",
-    "meanbee/magento2-serviceworker": "^1.0",
+    "meanbee/magento2-serviceworker": "^2.0",
     "meanbee/magento2-webappmanifest": "^1.0",
     "meanbee/magento2-svghelper": "^1.0",
     "meanbee/magento2-pwa": "@dev",
