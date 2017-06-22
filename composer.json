@@ -36,7 +36,7 @@
     "meanbee/magento2-webappmanifest": "^1.0",
     "meanbee/magento2-svghelper": "^1.0",
     "meanbee/magento2-pwa": "@dev",
-    "meanbee/magento2-csspreload": "@dev"
+    "meanbee/magento2-csspreload": "^1.0"
   },
   "autoload": {
     "files": [
