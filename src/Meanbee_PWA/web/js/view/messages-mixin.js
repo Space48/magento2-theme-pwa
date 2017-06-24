@@ -1,7 +1,9 @@
 define([
     'ko',
-    'Meanbee_PWA/js/app-messages'
-], function (ko, appMessages) {
+    'jquery',
+    'Meanbee_PWA/js/app-messages',
+    'jquery/jquery-storageapi'
+], function (ko, $, appMessages) {
     'use strict';
 
     return function(Component) {
@@ -9,6 +11,7 @@ define([
             initialize: function() {
                 this._super();
 
+                appMessages.set(this.cookieMessages);
                 this.cookieMessages = appMessages.getMessages();
             }
         });
