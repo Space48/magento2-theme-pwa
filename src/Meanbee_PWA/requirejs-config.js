@@ -5,5 +5,8 @@ var config = {
                 'Meanbee_PWA/js/view/messages-mixin': true
             }
         }
-    }
+    },
+    deps: [
+        'Meanbee_PWA/js/knockout/virtual-html'
+    ]
 };
