@@ -8,7 +8,8 @@ define([
     'use strict';
 
     function reload() {
-        var target = $('#maincontent').get(0);
+        var $target = $('#maincontent'),
+            target = $target.get(0);
         // Clean the app target of ko descendant bindings
         // so that we can create a new descendant binding context
         // for the updated content
@@ -21,6 +22,7 @@ define([
         // This will fetch all require.js modules for these elements and
         // run their corresponding js/plugin constructors
         $('body').trigger( 'contentUpdated' );
+        $target.trigger('app.contentLoaded');
     }
 
     return Component.extend({
