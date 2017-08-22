@@ -7,16 +7,14 @@ define([
 ], function ( Component, $, mage, ko, appData ) {
     'use strict';
 
-    function reload() {
+    function reload( viewModel ) {
         var $target = $('#maincontent'),
             target = $target.get(0);
+
         // Clean the app target of ko descendant bindings
         // so that we can create a new descendant binding context
         // for the updated content
-        if ( target ) {
-            ko.cleanNode( target );
-            ko.applyBindings( {}, target );
-        }
+        target && ko.cleanNode( target ) && ko.applyBindings( viewModel, target );
 
         // Initialize all data-mage-init elements.
         // This will fetch all require.js modules for these elements and
@@ -36,7 +34,7 @@ define([
 
             contentData.subscribe(function( updatedData ) {
                 this.update( updatedData );
-                reload();
+                reload( this );
             }.bind( this ));
 
             appData.fetch( document.location );

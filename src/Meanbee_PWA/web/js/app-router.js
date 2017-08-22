@@ -47,10 +47,7 @@ define([
     $(document).on('ajaxComplete router.fetchComplete', function ( event, xhr, settings ) {
         var cookies = $.cookieStorage.get('mage-messages');
 
-        if ( cookies.length ) {
-            appMessages.set( cookies );
-        }
-
+        cookies && cookies.length && appMessages.set( cookies );
         $.cookieStorage.set('mage-messages', "");
     });
 
@@ -63,8 +60,8 @@ define([
     });
     
     $(document).on('submit', function ( event, data ) {
-        const form = $( event.target ).is( 'form' ) ? $( event.target ) : false;
-        const formAction = form.prop( 'action' ) ? form.prop( 'action' ) : false;
+        const form = $( event.target ).is( 'form' ) ? $( event.target ) : false,
+              formAction = form.prop( 'action' ) ? form.prop( 'action' ) : false;
 
         if ( !formAction ) {
             return;
@@ -93,9 +90,7 @@ define([
         });
 
         function scroll( event ) {
-            if ( event.state ) {
-                window.scrollTo( 0, event.state.scrollY );
-            }
+            event.state && window.scrollTo( 0, event.state.scrollY );
         }
     });
 
