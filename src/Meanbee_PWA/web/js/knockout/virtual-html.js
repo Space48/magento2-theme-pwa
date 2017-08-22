@@ -22,7 +22,7 @@ define([
             }
 
             html = document.createRange().createContextualFragment(html);
-                ko.virtualElements.prepend(el, html);
+            ko.virtualElements.prepend(el, html);
         }
     }
 

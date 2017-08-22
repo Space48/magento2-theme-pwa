@@ -7,6 +7,7 @@ var config = {
         }
     },
     deps: [
+        'Meanbee_PWA/js/knockout/bootstrap-head',
         'Meanbee_PWA/js/knockout/virtual-html'
     ]
 };

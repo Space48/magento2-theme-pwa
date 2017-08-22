@@ -1,19 +1,33 @@
 <?php
-/**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 ?>
 <!doctype html>
 <html <?php /* @escapeNotVerified */ echo $htmlAttributes ?>>
-    <head <?php /* @escapeNotVerified */ echo $headAttributes ?>>
+    <head <?php /* @escapeNotVerified */ echo $headAttributes ?> data-block="app-head" data-bind="scope: 'app_head'">
         <?php /* @escapeNotVerified */ echo $requireJs ?>
+
+        <!-- ko foreach: headItems -->
+            <!-- ko virtualHtml: $data --><!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: !getProp('pwaShell') -->
         <?php /* @escapeNotVerified */ echo $headContent ?>
         <?php /* @escapeNotVerified */ echo $headAdditional ?>
+        <!-- /ko -->
     </head>
+    <script type="text/x-magento-init">
+    {
+        "[data-block='app-head']": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "app_head": {
+                        "component": "Meanbee_PWA/js/view/app-head"
+                    }
+                }
+            }
+        }
+    }
+    </script>
     <body data-container="body" data-mage-init='{"loaderAjax": {}, "loader": { "icon": "<?php /* @escapeNotVerified */ echo $loaderIcon; ?>"}}' <?php /* @escapeNotVerified */ echo $bodyAttributes ?>>
         <?php /* @escapeNotVerified */ echo $layoutContent ?>
     </body>
