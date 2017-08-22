@@ -14,17 +14,20 @@ $helper = $this->helper('Magento\Search\Helper\Data');
 <div class="block block-search">
     <div class="block block-content">
         <form class="form minisearch" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
-            <a href="#minisearch-body" class="minisearch__trigger"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/search.svg') ?></a>
+            <span class="minisearch__trigger">
+                <button class="icon" aria-label="<?php echo __('Search') ?>"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/search.svg') ?></button>
+                <span class="minisearch__trigger-label"><?php echo __('Search') ?></span>
+            </span>
             <div class="field search">
-                <label class="label minisearch__label" for="search" data-role="minisearch-label">
-                    <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
-                </label>
                 <div class="minisearch__body" id="minisearch-body">
                     <div class="control">
-                        <a href="#" class="minisearch__back">
+                        <button type="image" class="minisearch__back" aria-label="<?php echo __('Back') ?>">
                             <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/back.svg') ?>
-                        </a>
+                        </button>
                         <div class="minisearch__field">
+                            <label class="label minisearch__field-label" for="search" data-role="minisearch-label">
+                                <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+                            </label>
                             <input id="search"
                                    data-mage-init='{"quickSearch":{
                                         "formSelector":"#search_mini_form",
@@ -45,7 +48,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                                    autocomplete="off"/>
                             <div id="search_autocomplete" class="search-autocomplete"></div>
                         </div>
-                        <a href="#" class="minisearch__clear"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/clear.svg') ?></a>
+                        <button type="image" class="minisearch__clear" aria-label="<?php echo __('Clear') ?>"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/clear.svg') ?></button>
                         <?php echo $block->getChildHtml() ?>
                     </div>
                     <div class="actions">

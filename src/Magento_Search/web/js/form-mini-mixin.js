@@ -21,16 +21,27 @@ define([
 
                 $.extend(this.options, {
                     trigger: '.minisearch__trigger',
-                    clearBtn: '.minisearch__clear'
+                    clearBtn: '.minisearch__clear',
+                    backBtn: '.minisearch__back'
                 });
 
+                this.triggerBtn = this.searchForm.find(this.options.trigger);
                 this.clearBtn = this.searchForm.find(this.options.clearBtn);
+                this.backBtn = this.searchForm.find(this.options.backBtn);
+
+                this.triggerBtn.on('click', this._toggleSearchForm.bind( this, true ));
+                this.backBtn.on('click', this._toggleSearchForm.bind( this, false ));
 
                 this.clearBtn.on('click', function(e) {
                     e.preventDefault();
                     this.element.val('');
                     this.autoComplete.hide();
                 }.bind(this));
+            },
+
+            _toggleSearchForm: function( state, event ) {
+                event.preventDefault();
+                this.searchForm.toggleClass( 'is-active', state );
             },
             /**
              * Executes when the value of the search input field changes. Executes a GET request
@@ -58,17 +69,33 @@ define([
                     $.get(this.options.url, {q: value}, $.proxy(function (data) {
                         var val = this.element.val();
                         $.each(data, function(index, element) {
-                            var markedTitle = element.title.replace(new RegExp(val, 'gi'), '%%$&%%');
-                            element.title = markedTitle.split(
-                                new RegExp('%%', 'gi')
-                            ).map(function(item) {
-                                var ob = {};
-                                if (item === val) {
-                                    ob['match'] = true;
-                                }
-                                ob['string'] = item;
-                                return ob;
-                            });;
+                            var match = function(value) {
+                                return value.map( item => {
+                                    var ob = {};
+                                    if (item === val) {
+                                        ob['match'] = true;
+                                    }
+                                    ob['string'] = item;
+                                    return ob;
+                                });
+                            }
+
+                            var splitDelimiter = function(value) {
+                                return value.split(new RegExp('%%', 'gi'));
+                            }
+
+                            var addDelimiter = function(value) {
+                                return value.replace(new RegExp(val, 'gi'), '%%$&%%');
+                            }
+
+                            var transformTitle = _.compose(
+                                match,
+                                splitDelimiter,
+                                addDelimiter
+                            );
+
+                            element.title = transformTitle(element.title);
+
                             element.index = index;
                             var html = template({
                                 data: element
