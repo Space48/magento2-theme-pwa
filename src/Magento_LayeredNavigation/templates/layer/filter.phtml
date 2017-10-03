@@ -15,21 +15,21 @@
  */
 ?>
 
-<ol class="items">
+<ol class="filter-items">
     <?php foreach ($filterItems as $filterItem): ?>
-        <li class="item">
+        <li class="filter-item">
             <?php if ($filterItem->getCount() > 0): ?>
                 <a href="<?php echo $block->escapeUrl($filterItem->getUrl()) ?>">
                     <?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?>
                     <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
-                        <span class="count"><?php /* @escapeNotVerified */ echo $filterItem->getCount()?><span class="filter-count-label">
+                        <span class="filter-count"><?php /* @escapeNotVerified */ echo sprintf('(%d)', $filterItem->getCount())?><span class="filter-count-label">
                             <?php if ($filterItem->getCount() == 1):?> <?php /* @escapeNotVerified */ echo __('item')?><?php else:?> <?php /* @escapeNotVerified */ echo __('items') ?><?php endif;?></span></span>
                     <?php endif; ?>
                 </a>
             <?php else:?>
                 <?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?>
                 <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
-                    <span class="count"><?php /* @escapeNotVerified */ echo $filterItem->getCount()?><span class="filter-count-label">
+                    <span class="filter-count"><?php /* @escapeNotVerified */ echo sprintf('(%d)', $filterItem->getCount())?><span class="filter-count-label">
                         <?php if ($filterItem->getCount() == 1):?><?php /* @escapeNotVerified */ echo __('item')?><?php else:?><?php /* @escapeNotVerified */ echo __('items') ?><?php endif;?></span></span>
                 <?php endif; ?>
             <?php endif; ?>

@@ -26,6 +26,6 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
             '<span class="toolbar-number">' . $block->getTotalNum() . '</span>') ?>
     <?php else: ?>
         <?php /* @escapeNotVerified */ echo __('%1 Items',
-            '<span class="toolbar-number">' . $block->getTotalNum() . '</span>') ?>
+            '<span class="toolbar-number toolbar-amount__total">' . $block->getTotalNum() . '</span>') ?>
     <?php endif; ?>
 </p>

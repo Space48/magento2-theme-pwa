@@ -1,0 +1,13 @@
+<?php
+/**
+ * Category layered navigation
+ *
+ * @var $block \Magento\LayeredNavigation\Block\Navigation
+ */
+?>
+
+<?php $_activeFilters = $block->getLayer()->getState()->getFilters() ?>
+
+<div class="filter-trigger<?php if ($_activeFilters): ?> is-set<?php endif ?>" data-mage-init='{"toggleAdvanced": {"toggleContainers": "#filter-content, body", "selectorsToggleClass": "filters-active"}}'>
+    <span class="filter-trigger__text"><?php /* @escapeNotVerified */ echo __('Filter') ?></span>
+</div>

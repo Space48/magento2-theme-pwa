@@ -17,8 +17,13 @@
 <?php $columnsLimit = $block->getColumnsLimit() ?: 0; ?>
 <?php $_menu = $block->getHtml('level-top', 'submenu', $columnsLimit) ?>
 
+<span data-action="toggle-nav" class="action nav-toggle">
+    <span class="icon"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/home.svg') ?></span>
+    <span class="nav-toggle__label"><?php echo __('Shop') ?></span>
+</span>
+
 <nav class="navigation" data-action="navigation">
-    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+    <ul data-mage-init='{"customMenu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
         <?php /* @escapeNotVerified */ echo $_menu; ?>
         <?php /* @escapeNotVerified */ echo $block->getChildHtml(); ?>
     </ul>

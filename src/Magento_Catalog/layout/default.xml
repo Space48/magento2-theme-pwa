@@ -3,5 +3,6 @@
     <body>
         <referenceBlock name="advanced-search-link" remove="true" />
         <referenceBlock name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="catalog.compare.link" remove="true" />
     </body>
 </page>

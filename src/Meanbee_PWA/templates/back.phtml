@@ -1,0 +1,25 @@
+<div class="app-header__back" data-block="app-back" data-bind="scope: 'app_back'">
+    <button type="button" aria-label="<?php echo __('Back') ?>" data-bind="visible: shouldShow, click: navigate">
+        <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/back.svg') ?>
+    </button>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "[data-block='app-back']": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "app_back": {
+                        "component": "Meanbee_PWA/js/app/view/back",
+                        "config": {
+                            "options": {
+                                "excludeUrl": "<?php echo $block->getBaseUrl('') ?>",
+                                "baseUrl": "<?php echo $block->getBaseUrl() ?>"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>

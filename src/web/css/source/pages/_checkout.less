@@ -1,0 +1,409 @@
+// Magento 2 made me write this disgusting CSS
+
+.checkout-index-index {
+    --show-navbar: none;
+
+    >.loading-mask {
+        display: none !important;
+    }
+}
+
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 960px;
+    margin: 0 auto;
+
+    .authentication-wrapper {
+        display: none; //temp
+    }
+
+    .button.action {
+        width: 100%;
+
+        @media screen and (min-width: @medium-breakpoint) {
+            min-width: 200px;
+            width: auto;
+        }
+    }
+}
+
+.opc {
+    .legend {
+        display: none;
+    }
+
+    li.checkout-shipping-method,
+    .checkout-shipping-address,
+    .checkout-payment-method .discount-code,
+    .checkout-step-payment,
+    .checkout-payment-method .table-totals-wrapper {
+        .card();
+        padding: calc(var(--spacing-unit) ~"*" 4);
+    }
+
+    .checkout-payment-method .table-totals-wrapper {
+        @media screen and (min-width: @medium-breakpoint) {
+            display: none;
+        }
+    }
+
+    .checkout-payment-method >.step-title {
+        display: none;
+    }
+
+    .checkout-payment-method.is-active {
+        .payment-option-content {
+            display: block !important;
+        }
+    }
+
+    .checkout-payment-method {
+        .place-order {
+            margin: calc(var(--spacing-unit) ~"*" 3) calc(var(--spacing-unit) ~"*" 2);
+
+            button {
+                font-size: 1.25em;
+                padding-bottom: calc(var(--spacing-unit) ~"*" 2);
+                padding-top: calc(var(--spacing-unit) ~"*" 2);
+                width: 100%;
+            }
+        }
+
+    }
+
+    >li {
+        display: block !important;
+        position: relative;
+
+        &:not(.is-active) {
+            .step-content,
+            .payment-option-content {
+                display: none !important;
+                outline: none;
+            }
+        }
+
+        ~li:not(.is-active) {
+            .opc-payment-additional,
+            .checkout-step-payment {
+                background-color: #eee;
+
+                .step-title,
+                .payment-option-title {
+                    border-bottom: 0;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                    opacity: .4;
+                }
+            }
+        }
+    }
+
+    .field {
+        max-width: 300px;
+    }
+
+    .step-title,
+    .payment-option-title {
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        font-family: 'PT Sans Narrow', sans-serif;
+        font-size: 1.25em;
+        font-weight: 600;
+        margin: 0 0 1em;
+        max-width: none;
+        padding: 0 0 1rem;
+        text-transform: uppercase;
+    
+        @media screen and (min-width: @medium-breakpoint) {
+            font-size: 1.563em;
+        }
+    }
+
+    .legend {
+        color: inherit;
+        font-family: 'PT Sans Narrow', sans-serif;
+        font-size: 1.25em;
+        font-weight: 600;
+        line-height: 1.2;
+        text-transform: uppercase;
+    }
+
+    table {
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    tbody tr {
+        border-top: 1px solid rgba(0, 0, 0, .1);
+    }
+
+    tbody tr:first-child {
+        border-top: 0;
+    }
+
+    td {
+        padding: calc(var(--spacing-unit) ~"*" 2) 0;
+    }
+
+    .action-edit {
+        background-color: #ededed;
+        border-color: transparent;
+        color: inherit;
+        position: absolute;
+        right: calc(var(--spacing-unit) ~"*" 3);
+        top: calc(var(--spacing-unit) ~"*" 3);
+
+        &:hover,
+        &:focus {
+            background-color: #ddd;
+            border-color: transparent;
+        }
+    }
+
+    .shipping-information-title>span {
+        display: none;
+    }
+
+    .payment-group .step-title {
+        .screenreader();
+    }
+
+    .payment-method {
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        .actions-toolbar {
+            display: none;
+        }
+    }
+
+    .payment-method-title {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        padding: calc(var(--spacing-unit) ~"*" 2) 0;
+        max-width: none;
+
+        label {
+            order: -1;
+        }
+    }
+
+    .payment-method-content {
+        padding-bottom: calc(var(--spacing-unit) ~"*" 3);
+    }
+
+    .payment-method:not(._active) {
+        .payment-method-content {
+            display: none;
+        }
+    }
+
+}
+
+.table-totals {
+    th,
+    td:first-child {
+        width: 100%;
+    }
+
+    th {
+        font-weight: 400;
+    }
+
+    td:last-child {
+        text-align: right;
+        white-space: nowrap;
+        width: 40%;
+    }
+
+    tr:last-child {
+        font-size: 1.25em;
+        font-weight: 600;
+    }
+
+    .table-caption {
+        .screenreader();
+    }
+}
+
+.table-checkout-shipping-method {
+    >li {
+        border-top: 1px solid rgba(0, 0, 0, .1);
+        display: flex;
+        justify-content: space-between;
+        padding: calc(var(--spacing-unit) ~"*" 2) 0;
+
+        &:first-child {
+            border-top: 0;
+        }
+    }
+
+    .col-select {
+        align-self: center;
+    }
+
+    .col-price {
+        font-weight: 600;
+        min-width: 6ch;
+    }
+
+    .col-method {
+        margin-right: auto;
+        margin-left: calc(var(--spacing-unit) ~"*" 3);
+    }
+}
+
+.opc-block-summary {
+    display: flex;
+    flex-direction: column;
+
+    .table-totals {
+        display: none;
+
+        @media screen and (min-width: @medium-breakpoint) {
+            display: block;
+        }
+    }
+
+    >.title {
+        .screenreader();
+    }
+
+    .items-in-cart {
+        order: -1;
+    }
+}
+
+.opc-estimated-wrapper {
+    display: none;
+}
+
+.opc-progress-bar {
+    display: none;
+    justify-content: space-around;
+    margin: calc(var(--spacing-unit) ~"*" 2);
+}
+
+.opc-progress-bar-item._complete {
+    cursor: pointer;
+}
+
+.opc-progress-bar-item._active {
+    font-weight: 600;
+}
+
+.opc-progress-bar-item:not(._active) {
+    opacity: .5;
+}
+
+.opc-sidebar {
+    .card();
+    margin-bottom: 0;
+    order: -1;
+
+    .table-totals {
+        margin: calc(var(--spacing-unit) ~"*" 2) 0;
+    }
+
+    .modal-header {
+        display: none;
+    }
+}
+
+.actions-toolbar {
+    margin-top: calc(var(--spacing-unit) ~"*" 3);
+}
+
+.table-checkout-shipping-method th {
+    .screenreader();
+}
+
+.items-in-cart {
+    .details-qty {
+        font-size: .9em;
+    }
+    
+    .item-options {
+        font-size: .9em;
+        margin: 0;
+
+        dt {
+            clear: both;
+        }
+
+        dt, 
+        dd {
+            float: left;
+        }
+
+        dd {
+            margin-left: var(--spacing-unit);
+        }
+    }
+
+    .title {
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        font-family: 'PT Sans Narrow', sans-serif;
+        font-size: 1.25em;
+        font-weight: 600;
+        padding-bottom: calc(var(--spacing-unit) ~"*" 2);
+        text-transform: uppercase;
+    }
+}
+
+.minicart-items {
+    .product-item {
+        display: flex;
+        padding: calc(var(--spacing-unit) ~"*" 2) 0;
+    }
+
+    .product-item-details {
+        padding: 0 var(--spacing-unit);
+    }
+
+    .product.options:after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .product-image-wrapper {
+        display: block;
+        max-width: 100px;
+    }
+
+    .product-image-container {
+        height: auto !important;
+        width: auto !important;
+    }
+}
+
+@media screen and (min-width: @medium-breakpoint) {
+    .checkout-container {
+        display: block;
+    }
+
+    .checkout-container::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .opc-wrapper {
+        float: left;
+        width: 60%;
+    }
+
+    .opc-sidebar {
+        float: right;
+        margin-left: 0;
+        position: sticky;
+        top: var(--spacing-unit);
+        width: calc(40% ~"-" calc(var(--spacing-unit) ~"*" 2));
+    }
+}

@@ -2,8 +2,8 @@ var config = {
     "map": {
         '*': {
             networkBar: 'Magento_Theme/js/network-bar',
-            historyBack: 'Magento_Theme/js/history-back',
-            imageLazyLoad: 'Magento_Theme/js/img-lazy-load'
+            imageLazyLoad: 'Magento_Theme/js/img-lazy-load',
+            customMenu: 'Magento_Theme/js/custom-menu'
         }
     }
 };

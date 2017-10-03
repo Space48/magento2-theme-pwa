@@ -1,13 +1,88 @@
-"Proceed to Checkout","Proceed to checkout",theme,frontend/Meanbee/PWA
-"Add to Cart","Add to cart",theme,frontend/Meanbee/PWA
-"Add to Wish List","Add to wish list",theme,frontend/Meanbee/PWA
-"Go to Checkout","Checkout now",theme,frontend/Meanbee/PWA
-"Submit Review","Submit review",theme,frontend/Meanbee/PWA
-"Continue Shopping","Continue shopping",theme,frontend/Meanbee/PWA
-"Update Shopping Cart","Update shopping cart",theme,frontend/Meanbee/PWA
-"Clear Shopping Cart","Clear shopping cart",theme,frontend/Meanbee/PWA
-"Shopping Cart","Cart",theme,frontend/Meanbee/PWA
-"Apply Discount","Apply discount",theme,frontend/Meanbee/PWA
-"Update Cart","Update cart",theme,frontend/Meanbee/PWA
-"We found other products you might like!","You may also like",theme,frontend/Meanbee/PWA
-"Be the first to review this product","Write a review",theme,frontend/Meanbee/PWA
+Details,Details
+"We can't find products matching the selection.","We can't find products matching the selection."
+"Add to Cart","Add to Cart"
+"In stock","In stock"
+"Out of stock","Out of stock"
+Sort,Sort
+Back,Back
+"Items %1-%2 of %3","Items %1-%2 of %3"
+"%1 Item","%1 Item"
+"%1 Items","%1 Items"
+Show,Show
+"per page","per page"
+"Sort By","Sort By"
+"Set Ascending Direction","Set Ascending Direction"
+"Set Descending Direction","Set Descending Direction"
+"View as","View as"
+Qty,Qty
+"Update Shopping Cart","Update Shopping Cart"
+Price,Price
+"See price before order confirmation.","See price before order confirmation."
+"What's this?","What's this?"
+Subtotal,Subtotal
+Cart,Cart
+"Your cart is empty","Your cart is empty"
+"Sign in to view your cart or start shopping","Sign in to view your cart or start shopping"
+"Sign In","Sign In"
+"Continue Shopping","Continue Shopping"
+"* Required Fields","* Required Fields"
+"Please enter your email address below to receive a password reset link.","Please enter your email address below to receive a password reset link."
+Email,Email
+"Reset My Password","Reset password"
+"Go back","Go back"
+"Registered Customers","Registered Customers"
+Password,Password
+"Forgot Your Password?","Forgot Your Password?"
+"Personal Information","Personal Information"
+"Address Information","Address Information"
+Optional,Optional
+Company,Company
+"Phone Number","Phone Number"
+*,*
+"Street Address","Street Address"
+Address,Address
+"Street Address %1","Street Address %1"
+City,City
+State/Province,State/Province
+"Please select a region, state or province.","Please select a region, state or province."
+"Zip/Postal Code","Zip/Postal Code"
+Country,Country
+"Sign-in Information","Sign-in Information"
+"Password Strength","Password Strength"
+"No Password","No Password"
+"Confirm Password","Confirm Password"
+"Sign Up for Newsletter","Sign Up for Newsletter"
+"Create an Account","Create account"
+"Create New Customer Account","Create account"
+(Optional),(Optional)
+Gender,Gender
+Name,Name
+"Tax/VAT number","Tax/VAT number"
+item,item
+items,items
+"Shop By","Shop By"
+Filters,Filters
+"Clear All","Clear All"
+Rating,Rating
+Review,Review
+Reviews,Reviews
+"Add Your Review","Add Your Review"
+"Be the first to review this product","Be the first to review this product"
+Search,Search
+Clear,Clear
+"Items %1 to %2 of %3 total","Items %1 to %2 of %3 total"
+"%1 Item(s)","%1 Item(s)"
+Page,Page
+Previous,Previous
+"You're currently reading page","You're currently reading page"
+Next,Next
+Shop,Shop
+"You are currently offline","You are currently offline"
+"Add to Wish List","Save"
+"Order summary","Order summary"
+"Account","Account"
+"Customer Login","Login"
+"Review by","By"
+"edit","Change"
+"Shipping Methods","Shipping Method"
+"Payment Method:","Payment"

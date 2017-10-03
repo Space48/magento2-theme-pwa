@@ -1,13 +1,10 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <remove src="mage/calendar.css" />
         <remove src="css/styles-m.css" />
         <remove src="css/styles-l.css" />
 
-        <link src="//fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro:400,600" src_type="url" rel="preload" />
+        <link src="//fonts.googleapis.com/css?family=Open+Sans|PT+Sans+Narrow:700" src_type="url" rel="preload" as="style" />
         <css src="css/app-shell.css" />
-
-        <meta name="theme-color" content="#2e3d9e" />
     </head>
 </page>

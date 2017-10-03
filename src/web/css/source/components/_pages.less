@@ -4,11 +4,27 @@
     }
 
     .item {
-        display: inline-block;
+        &:not(.pages-item-next):not(.pages-item-previous) {
+            display: none;
+
+            @media screen and (min-width: @medium-breakpoint) {
+                display: inherit;
+            }
+        }
     }
 
     .page {
         display: block;
-        padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
+        padding: var(--spacing-unit) var(--spacing-unit);
     }
+}
+
+.pages-items {
+    align-items: center;
+    display: flex;
+}
+
+.pages-item-next,
+.pages-item-previous {
+    margin: 0 var(--spacing-unit);
 }

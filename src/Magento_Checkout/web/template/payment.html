@@ -4,12 +4,18 @@
  * See COPYING.txt for license details.
  */
 -->
-<li id="payment" role="presentation" class="checkout-payment-method" data-bind="fadeVisible: isVisible">
+<li id="payment" role="presentation" class="checkout-payment-method" data-bind="css: { 'is-active': isVisible }">
+    <!-- ko foreach: getRegion('beforeMethodsForm') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+
+    <div class="checkout-step-payment">
+        <div class="step-title" data-bind="i18n: 'Payment'" data-role="title"></div>
         <div id="checkout-step-payment"
-             class="step-content"
-             data-role="content"
-             role="tabpanel"
-             aria-hidden="false">
+                class="step-content"
+                data-role="content"
+                role="tabpanel"
+                aria-hidden="false">
             <!-- ko if: (quoteIsVirtual) -->
                 <!-- ko foreach: getRegion('customer-email') -->
                     <!-- ko template: getTemplate() --><!-- /ko -->
@@ -38,5 +44,10 @@
                 </fieldset>
             </form>
         </div>
-    </li>
+    </div>
+
+    <!-- ko foreach: getRegion('afterPayments') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</li>
     

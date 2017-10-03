@@ -39,10 +39,31 @@ define([
                 }.bind(this));
             },
 
+            /**
+             * Executes when the search box is submitted. Sets the search input field to the
+             * value of the selected item.
+             * @private
+             * @param {Event} event - The submit event
+             */
+            _onSubmit: function (event) {
+                var value = this.element.val();
+
+                if (isEmpty(value) && event) {
+                    event.preventDefault();
+                }
+
+                if (this.responseList.selected) {
+                    this.element.val(this.responseList.selected.find('.qs-option-name').text());
+                }
+
+                this._toggleSearchForm( false, event );
+            },
+
             _toggleSearchForm: function( state, event ) {
-                event.preventDefault();
+                event && event.preventDefault();
                 this.searchForm.toggleClass( 'is-active', state );
             },
+
             /**
              * Executes when the value of the search input field changes. Executes a GET request
              * to populate a suggestion list based on entered text. Handles click (select), hover,

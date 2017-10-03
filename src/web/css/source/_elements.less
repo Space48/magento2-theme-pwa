@@ -10,16 +10,21 @@
     box-sizing: inherit;
 }
 
-html,
+html {
+    font-size: @base-font-size;
+}
+
 body {
+    background-color: var(--background-color, @background-grey);
     box-sizing: border-box;
     color: @text-color;
-    font: 400 15px/1.5 'Source Sans Pro', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.45;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     height: 100%;
-    text-rendering: optimizeLegibility;
 
     @media screen and (min-width: @medium-breakpoint) {
         font-size: 14px;
@@ -33,7 +38,7 @@ body {
 
 body {
     .fonts-loaded & {
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: 'Open Sans', sans-serif;
     }
 }
 
@@ -77,47 +82,79 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
-    margin: 2em 0;
+    color: @text-color;
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-weight: inherit;
+    line-height: 1.2;
+    margin: 1.414em 0 0.5em;
 }
 
 h1 {
-    font-size: 2rem;
-    font-weight: 400;
+    margin-top: 0;
+    font-size: 2.441em;
 }
 
 h2 {
-    font-size: 1.8rem;
-    font-weight: 400;
+    font-size: 1.953em;
 }
 
 h3 {
-    font-size: 1.6rem;
+    font-size: 1.563em;
     font-weight: 400;
 }
 
 h4 {
-    font-size: 1.4rem;
+    font-size: 1.25em;
 }
 
 h5 {
-    font-size: 1.2rem;
+    font-size: 1.25em;
 }
 
 h6 {
-    font-size: 1rem;
+    font-size: 1.25em;
+}
+
+@media screen and (min-width: @medium-breakpoint) {
+    h1 {
+        font-size: 3.05em;
+    }
+    
+    h2 {
+        font-size: 2.44em;
+    }
+    
+    h3 {
+        font-size: 1.95em;
+    }
+    
+    h4 {
+        font-size: 1.5625em;
+    }
+    
+    h5 {
+        font-size: 1.5625em;
+    }
+    
+    h6 {
+        font-size: 1.5625em;
+    }
+}
+
+small {
+    font-size: 0.8em;
 }
 
 a {
     color: @link-color;
+    font-weight: 600;
     text-decoration: none;
-    transition: .3s color ease-in-out;
+    transition: .2s color ease-out;
     -webkit-tap-highlight-color: transparent;
 
     &:hover,
     &:focus {
-        color: @primary-color;
+        color: @subtext-color;
         outline: none;
     }
 
@@ -137,9 +174,22 @@ fieldset {
     }
 }
 
-label {
-    display: inline-block;
-    margin: .25em 0;
+label,
+legend {
+    color: @subtext-color;
+    display: inline;
+    font-size: 1.1em;
+
+    &[data-required]:after {
+        content: attr(data-required);
+        color: @subtext-color;
+        font-size: .7em;
+        margin-left: 3px;
+    }
+
+    &[data-required="*"]:after {
+        color: @error-color;
+    }
 }
 
 input[type="text"],
@@ -156,17 +206,17 @@ input[type="tel"],
 input[type="time"],
 input[type="url"],
 input[type="submit"],
-textarea,
-button {
+textarea {
     -webkit-appearance: none;
-    border: 1px solid @border-color;
+    border: 0;
+    border-bottom: 1px solid @border-color;
     border-radius: 0;
-    font-family: 'Source Sans Pro', sans-serif; // Required due to yosemite overwriting unless explicitly defined
+    font-family: 'Open Sans', sans-serif; // Required due to yosemite overwriting unless explicitly defined
     font-size: 1rem;
-    padding: .75rem;
+    padding: var(--spacing-unit) 0;
 
     &:focus {
-        transition: border-color .2s ease-in-out;
+        transition: border-color .3s ease-in;
         border-color: @border-color-active;
         outline: none;
     }
@@ -189,19 +239,64 @@ textarea {
     width: 100%;
 
     &:focus {
-        border: 1px solid @border-color-active;
+        border-bottom-color: @border-color-active;
         outline: none;
     }
 }
 
 input[type="checkbox"],
 input[type="radio"] {
+    border: 1px solid @border-color;
+    cursor: pointer;
     display: inline-block;
+    height: 1.2em;
+    margin-top: -1px;
     vertical-align: middle;
+    width: 1.2em;
+    -webkit-appearance: none;
+
+    &[disabled] {
+        cursor: not-allowed;
+        opacity: .5;
+    }
+}
+
+input[type="checkbox"] {
+    border-radius: 2px;
+
+    &:hover,
+    &:focus,
+    &[disabled],
+    &:checked[disabled] {
+        border-color: var(--primary-color);
+    }
+
+    &:checked {
+        background: url(../images/icons/check.svg) center/contain no-repeat #000;
+        border-color: inherit;
+    }
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+
+    &:hover,
+    &:focus,
+    &[disabled],
+    &:checked[disabled] {
+        border-color: var(--primary-color);
+    }
+
+    &:checked {
+        background-color: #000;
+        border-color: inherit;
+        box-shadow: inset 0 0 0px 2px #fff;
+    }
 }
 
 input[type="checkbox"]~label {
     margin-left: 5px;
+    vertical-align: middle;
 }
 
 textarea {
@@ -214,52 +309,36 @@ button::-moz-focus-inner {
     padding: 0;
 }
 
+button {
+    -webkit-appearance: none;
+    background: none;
+    border: 0;
+    line-height: inherit;
+    padding: 0;
+}
+
 select {
+    align-items: center;
+    background: #fff url('../images/icons/dropdown-arrow.svg') no-repeat 98%;
+    border: 1px solid #c5c8ce;
+    border-radius: @radii-medium;
+    display: inline-flex;
+    font-family: 'Open Sans', sans-serif;
+    padding: .5em 1em;
     width: 100%;
+    -webkit-appearance: none;
+}
+
+form {
+    br {
+        display: none;
+    }
 }
 
 iframe,
 object,
 embed {
     max-width: 100%;
-}
-
-button,
-a.button {
-    -webkit-tap-highlight-color: transparent;
-    border-color: hsl(0, 0, 0);
-    background-color: hsl(0, 0, 0);
-    color: hsl(255, 100%, 100%);
-    display: inline-block;
-    font-size: 1.1em;
-    font-weight: 600;
-    outline: none;
-    min-width: 180px;
-    padding: .75rem;
-    text-align: center;
-    user-select: none;
-
-    &::-moz-focus-inner {
-        border: 0;
-    }
-
-    &:focus,
-    &:hover {
-        background-color: lighten(hsl(0, 0, 0), 25%);
-        border-color: hsl(0, 0, 0);
-    }
-
-    &:active {
-        background-color: hsl(255, 100%, 100%);
-        color: hsl(0, 0, 0);
-    }
-
-    &:disabled {
-        background-color: hsl(0, 0, 0);
-        color: hsl(255, 100%, 100%);
-        cursor: not-allowed;
-        opacity: .5;
-    }
 }
 
 ul,
@@ -270,9 +349,10 @@ ol {
 }
 
 p {
-    margin: var(--vertical-spacing-unit) 0;
+    margin-bottom: 1.3em;
 
-    &:empty {
+    &:empty,
+    &:blank {
         margin: 0;
     }
 }

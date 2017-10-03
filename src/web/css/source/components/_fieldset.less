@@ -1,5 +1,40 @@
 .fieldset {
     .field {
-        margin: 1rem 0;
+        margin: calc(var(--spacing-unit) ~"*" 2) 0;
+
+        .nested {
+            margin-top: calc(var(--spacing-unit) ~"*" 2);
+        }
+    }
+
+    .password-strength-meter {
+        color: @subtext-color;
+        font-size: .9em;
+        padding: var(--spacing-unit) 0;
+    }
+
+    .control select {
+        margin: var(--spacing-unit) 0;
+    }
+
+    .note {
+        color: @subtext-color;
+        display: block;
+        font-size: .9em;
+        margin-top: var(--spacing-unit);
+    }
+
+    .field-tooltip-content {
+        display: none;
+    }
+
+    .control .field {
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 }

@@ -15,7 +15,6 @@
             </arguments>
         </referenceBlock>
 
-        <move element="page.main.title" destination="checkout.cart.items" before="-" />
         <move element="checkout.cart.form" destination="checkout.cart.container" before="cart.summary" />
         <move element="checkout.cart.coupon" destination="checkout.cart.container" after="cart.summary" />
     </body>

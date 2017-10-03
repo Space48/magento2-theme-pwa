@@ -1,0 +1,109 @@
+.catalog-category-view,
+.catalogsearch-result-index {
+    .products-grid {
+        --type-product-item-small-medium-width: calc(100% / 3);
+    }
+
+    .swatch-layered {
+        padding: 0 calc(var(--spacing-unit) ~"*" 2) calc(var(--spacing-unit) ~"*" 2);
+    }
+}
+
+.toolbar-products {
+    .limiter {
+        display: none;
+    }
+}
+
+.toolbar-bottom .toolbar-products {
+    .sort-options {
+        display: none;
+    }
+}
+
+.filter-trigger {
+    align-items: center;
+    background-color: #fff;
+    border-left: 0;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+
+    &.is-set:after {
+        background: url(../images/icons/check.svg) no-repeat center;
+        background-size: contain;
+        content: '';
+        display: inline-block;
+        height: 1em;
+        vertical-align: middle;
+        width: 1em;
+    }
+
+    &:before {
+        background: url(../images/icons/filter.svg) no-repeat center;
+        content: '';
+        display: inline-block;
+        height: 1em;
+        margin-right: var(--spacing-unit);
+        width: 1em;
+    }
+}
+
+.filter-title {
+    .screenreader();
+}
+
+.filter-title__text, {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sort-options__title {
+    right: 0;
+
+    &:before {
+        background: url(../images/icons/sort.svg) no-repeat center;
+    }
+}
+
+@media screen and (min-width: @medium-breakpoint) {
+    .filter-trigger {
+        display: none;
+    }
+}
+
+@media screen and (max-width: @medium-breakpoint) {
+    .filter-content {
+        background-color: #fff;
+        display: block !important; // because mage.collapsible uses .show()
+        position: fixed;
+        height: 100%;
+        opacity: 0;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        top: 0;
+        transition: opacity .4s ease-in-out;
+        transform: translate3d(0, 100%, 0);
+        width: 100%;
+        z-index: 110;
+    }
+
+    .filter-content {
+        &.filters-active {
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+    }
+}
+
+.sort-options__content {
+    &.sort-active {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+body.filters-active {
+    height: 100%; 
+    overflow: hidden;
+}

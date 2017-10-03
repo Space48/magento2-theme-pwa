@@ -8,8 +8,11 @@
 ?>
 <div class="cart-empty">
     <?php echo $block->getChildHtml('checkout_cart_empty_widget'); ?>
+    <img src="<?php echo $block->getViewFileUrl('images/empty-cart.svg') ?>" alt="" width="140" />
     <h3 class="cart-empty-heading"><?php /* @escapeNotVerified */ echo __('Your cart is empty') ?></h3>
-    <p><?php echo __('Sign in to view your cart or start shopping') ?></p>
+    <div class="cart-empty-content">
+        <p><?php echo __('Sign in to view your cart or start shopping') ?></p>
+    </div>
     <div class="buttons-group">
         <a href="<?php echo $block->escapeUrl($block->getUrl('customer/account/login')) ?>" class="button"><?php echo __('Sign In') ?></a>
         <a href="<?php echo $block->escapeUrl($block->getContinueShoppingUrl()) ?>" class="button"><?php echo __('Continue Shopping') ?></a>

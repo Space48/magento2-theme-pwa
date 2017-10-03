@@ -3,46 +3,59 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    text-align: center;
     width: 100%;
 
     @media screen and (min-width: @medium-breakpoint) {
-        font-size: 1.2em;
+        font-size: 1em;
     }
 
     .product-item {
-        background-color: #fff;
-        margin: var(--vertical-spacing-unit) 0;
+        margin: 0;
+        padding: 0 calc(var(--spacing-unit) ~"/" 2) var(--spacing-unit);
         width: var(--type-product-item-width, 50%);
 
         &:last-child {
             margin-right: auto;
         }
 
+        @media screen and (min-width: @small-medium-breakpoint) {
+            width: var(--type-product-item-small-medium-width, 50%);
+        }
+
         @media screen and (min-width: @medium-breakpoint) {
-            width: var(--type-product-item-medium-width, 50%);
+            width: var(--type-product-item-medium-width, calc(100% / 3));
         }
 
         @media screen and (min-width: @large-breakpoint) {
-            width: var(--type-product-item-large-width, calc(100% / 3));
+            width: var(--type-product-item-large-width, 25%);
         }
 
         @media screen and (min-width: @extra-large-breakpoint) {
-            width: var(--type-product-item-xlarge-width, 25%);
+            width: var(--type-product-item-xlarge-width, 20%);
+        }
+    }
+
+    .product-item-info {
+        background-color: #fff;
+        border: 1px solid transparent;
+        height: 100%;
+
+        &:hover {
+            border-color: rgba(0, 0, 0, .1);
         }
     }
 
     .product-item-name {
         display: block;
-        font-size: 0.9em;
-        letter-spacing: .025em;
-        text-transform: uppercase;
-        margin: var(--vertical-spacing-unit) 0 0;
+    }
+
+    .product-item-details {
+        font-size: .928em;
+        padding: calc(var(--spacing-unit) ~"*" 2);
     }
 
     .product-item-link {
-        color: #000;
-        font-weight: 400;
+        color: inherit;
     }
 
     .product-item-photo,
@@ -50,14 +63,33 @@
         display: block;
     }
 
-    .price-box {
-        display: block;
-        font-weight: 600;
-        margin-bottom: var(--vertical-spacing-unit);
+    .product-image-photo {
+        margin: 0 auto;
     }
 
-    .product-item-actions,
+    .product-image-photo.is-loading {
+        opacity: .3;
+    }
+
+    .rating-summary {
+        font-size: 1.2em;
+    }
+
     .product-reviews-summary {
+        font-size: 1em;
+        margin: var(--spacing-unit) 0 calc(var(--spacing-unit) ~"/" 2);
+    }
+
+    .price-box {
+        display: block;
+        margin-bottom: var(--spacing-unit);
+    }
+
+    .product-item-actions {
         display: none;
+    }
+
+    .swatch-option.color {
+        font-size: .7em;
     }
 }

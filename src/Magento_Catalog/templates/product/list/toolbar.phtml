@@ -15,20 +15,29 @@
  */
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
 ?>
+<?php $_sortContentId = uniqid('sort-options-content-') ?>
 <?php if ($block->getCollection()->getSize()): ?>
     <div class="toolbar toolbar-products" data-mage-init='<?php /* @escapeNotVerified */ echo $block->getWidgetOptionsJson(); ?>'>
-        <?php if ($block->isExpanded()): ?>
-            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
-        <?php endif; ?>
-
         <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
 
+        <div class="toolbar-refinements">
+            <div class="sort-options">
+                <div class="sort-options__content" id="<?php echo $_sortContentId ?>">
+                    <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+
+                    <?php if ($block->isExpanded()): ?>
+                        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <?php echo $block->getChildHtml('filter.trigger') ?>
+            
+            <?php if ($block->isExpanded()): ?>
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+            <?php endif; ?>
+        </div>
+
         <?php echo $block->getPagerHtml() ?>
-
-        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
-
-        <?php if ($block->isExpanded()): ?>
-            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
-        <?php endif; ?>
     </div>
 <?php endif ?>

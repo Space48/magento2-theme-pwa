@@ -12,11 +12,11 @@
 <div data-block="minicart" class="minicart-wrapper">
     <a class="action showcart cart-link" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
        data-bind="scope: 'minicart_content'">
-        <span class="text cart-link__label"><?php /* @escapeNotVerified */ echo __('My Cart'); ?></span>
         <span class="counter qty cart-link__counter"
               data-bind="css: { 'has-items': !!getCartParam('summary_count') == true }, blockLoader: isLoading">
-            <span class="cart-link__icon">
-                <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/basket.svg') ?>
+            <span class="cart-link__icon icon">
+                <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/cart.svg') ?>
+                <span class="cart-link__label"><?php echo __('Cart') ?></span>
             </span>
             <span class="counter-number cart-link__count">
                 <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
@@ -32,7 +32,7 @@
     <?php if ($block->getIsNeedToDisplaySideBar()): ?>
         <div class="block block-minicart empty"
              data-role="dropdownDialog"
-             data-mage-init='{"dropdownDialog":{
+             data-mage-init='{"conditionalDropdown":{
                 "appendTo":"[data-block=minicart]",
                 "triggerTarget":".showcart",
                 "timeout": "2000",

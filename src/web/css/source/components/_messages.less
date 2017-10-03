@@ -1,5 +1,29 @@
+@keyframes fadeinout {
+    0% {
+        opacity: 0;
+        visibility: visible;
+        z-index: 1;
+    }
+    10%   { 
+        opacity: 1;
+    }
+    90% { 
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+    }
+}
+
 .messages-wrapper {
-    padding: 0 var(--horizontal-spacing-unit);
+    position: fixed;
+    right: 0;
+    bottom: var(--footer-height, 0);
+    left: 0;
+    padding: 0;
+    z-index: 100;
 }
 
 .messages {
@@ -8,9 +32,36 @@
 }
 
 .message {
-    border-radius: .125em;
-    margin: 1em 0;
-    padding: 1em;
+    align-items: center;
+    animation: fadeinout 6s;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, .2);
+    bottom: 0;
+    color: #fff;
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    left: 0;
+    opacity: 0;
+    padding: var(--spacing-unit) calc(var(--spacing-unit) ~"*" 2);
+    position: absolute;
+    right: 0;
+    visibility: hidden;
+    z-index: -1;
+
+    &:before {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: '';
+        display: inline-block;
+        height: 1.5em;
+        margin-right: calc(var(--spacing-unit) ~"*" 2);
+        vertical-align: middle;
+        width: 1.5em;
+    }
+
+    div {
+        display: inline;
+    }
 
     a {
         color: currentColor;
@@ -18,22 +69,30 @@
     }
 
     &-success {
-        background-color: hsla(156, 86%, 28%, 0.13);
-        color: #0a8754;
+        background-color: @success-color;
+
+        &:before {
+            background-image: url(../images/icons/check-white.svg);
+        }
     }
 
     &-error {
-        background-color: hsla(358, 73%, 90%, 1);
-        color: #d01345;
+        background-color: @error-color;
+
+        &:before {
+            background-image: url(../images/icons/clear-white.svg);
+        }
     }
 
     &-notice {
-        background-color: hsla(213, 64%, 50%, 0.15);
-        color: #2f77d1;
+        background-color: @notice-color;
+
+        &:before {
+            background-image: url(../images/icons/notice-white.svg);
+        }
     }
 
     &-warning {
-        background-color: hsla(51, 91%, 54%, 0.23);
         color: #bca109;
     }
 
@@ -47,7 +106,7 @@
         margin: 0;
 
         &:before {
-            margin-right: 1em;
+            margin-right: var(--spacing-unit);
         }
     }
 }

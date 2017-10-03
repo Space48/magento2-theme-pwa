@@ -53,8 +53,8 @@
                 <height>100</height>
             </image>
             <image id="mini_cart_product_thumbnail" type="thumbnail">
-                <width>75</width>
-                <height>75</height>
+                <width>200</width>
+                <height>200</height>
             </image>
             <image id="new_products_content_widget_grid" type="small_image">
                 <width>300</width>
@@ -82,8 +82,8 @@
                 <height>750</height>
             </image>
             <image id="product_page_image_small" type="thumbnail">
-                <width>110</width>
-                <height>110</height>
+                <width>75</width>
+                <height>75</height>
             </image>
             <image id="product_page_main_image" type="image">
                 <width>750</width>
@@ -228,7 +228,7 @@
         <var name="breakpoints">
             <var name="large">
                 <var name="conditions">
-                    <var name="min-width">1400px</var>
+                    <var name="min-width">1000px</var>
                 </var>
                 <var name="options">
                     <var name="options">
@@ -242,7 +242,7 @@
                 </var>
                 <var name="options">
                     <var name="options">
-                        <var name="nav">dots</var>
+                        <var name="navdir">horizontal</var>
                     </var>
                 </var>
             </var>

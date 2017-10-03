@@ -2,21 +2,32 @@
     <body>
         <referenceBlock name="view.addto.compare" remove="true" />
         <referenceBlock name="product.info.mailto" remove="true" />
-        <referenceBlock name="product.info.stock.sku" remove="true" />
-        <referenceBlock name="product.info.review" remove="true" />
-        <referenceBlock name="reviews.tab" remove="true" />
-        <referenceBlock name="product.info.overview" remove="true" />
 
         <move element="product.info.description" destination="product.info.main" after="product.info.extrahint"/>
         <move element="page.main.title" destination="product.info.main" before="-" />
-        <move element="product.info.social" destination="product.info.options.wrapper.bottom" after="product.info.addtocart.additional" />
-        <move element="product.info.media" destination="product.main.wrapper" before="product.info.main" />
+        <move element="product.info.media" destination="product.main.wrapper" before="product.aside" />
         <move element="product.info.main" destination="product.main.wrapper" />
+        <move element="view.addto.wishlist" destination="product.info.addtocart.additional" />
+        <move element="product.info.review" destination="product.info.price" after="-" />
+        <move element="product.info.stock.sku" destination="product.info.options.wrapper.bottom" before="-" />
+        <move element="breadcrumbs" destination="product.aside" before="-" />
+        <move element="product.info.details" destination="product.additional.content" />
 
         <!-- Create a wrapper main product content -->
         <referenceContainer name="content">
-            <container name="product.main.wrapper" as="product.main.wrapper" label="product wrapper" htmlTag="div" htmlClass="product-main-wrapper" before="-"/>
+            <container name="product.main.wrapper" as="product.main.wrapper" label="product wrapper" htmlTag="div" htmlClass="product-main-wrapper" before="-">
+                <container name="product.aside" as="product.aside" label="product aside" htmlTag="div" htmlClass="product-aside" after="product.info.media" />
+                <container name="product.additional.content" label="product aside" htmlTag="div" htmlClass="product-additional-content" after="product.aside" />
+            </container>
         </referenceContainer>
+
+        <move element="product.info.main" destination="product.aside" />
+
+        <referenceBlock name="app-title">
+            <action method="setPageTitle">
+                <argument translate="true" name="page_title" xsi:type="string">Details</argument>
+            </action>
+        </referenceBlock>
 
         <referenceBlock name="product.info.description">
             <arguments>

@@ -9,13 +9,14 @@ define([
     $.widget("meanbee." + _namespace, {
         options: {
             classes: {
-                loaded: 'has-lazy-loaded'
+                beforeLoad: 'has-resolved',
+                afterLoad: 'has-loaded',
             },
             selectors: {
                 target: '[data-lazy]'
             },
             config: {
-                rootMargin: '50px 0px'
+                rootMargin: '20px 0px'
             },
             observedEvents: []
         },
@@ -32,15 +33,20 @@ define([
         },
 
         _createObservers: function() {
-            this.images.each( (index, image) => this.observer.observe( image ) );
+            this.targets.each( (index, target) => {
+                let $image = $(target).find('img');
+                
+                this.observer.observe( target );
+                $image.on('load', this._handleLoad.bind( this ));
+            })
         },
 
         _create: function () {
-            this.images = this.element.find( this.options.selectors.target );
-            this.imageCount = this.images.length;
+            this.targets = this.element.find( this.options.selectors.target );
+            this.targetsCount = this.targets.length;
 
             if ( !( 'IntersectionObserver' in window ) ) {
-                this._loadImage( this.images );
+                this._loadImage( this.targets );
             } else {
                 this._bind();
             }
@@ -49,14 +55,15 @@ define([
         _loadImage: function( collection ) {
             $(collection).each( (index, item) => {
                 let $item = $(item),
-                    src = $item.data('src');
+                    $img = $(item).find('img'),
+                    src = $img.data('src');
 
                 fetch(src).then( () => {
-                    $item.data('src') && $item.prop('src', $item.data('src'));
-                    $item.addClass( this.options.classes.loaded );
-                    $item.removeData('src');
+                    $item.addClass( this.options.classes.beforeLoad );
+                    $img.data('src') && $img.prop('src', $img.data('src'));
+                    $img.attr('data-src', '');
 
-                    this.imageCount--;
+                    this.targetsCount--;
                     this.observer.unobserve( $item.get(0) );
                 });
             });
@@ -64,8 +71,8 @@ define([
 
         _sync: function() {
             this._disconnect();
-            this.images = this.element.find( this.options.selectors.target );
-            this.imageCount = this.images.length;
+            this.targets = this.element.find( this.options.selectors.target );
+            this.targetsCount = this.targets.length;
             this._createObservers();
         },
 
@@ -75,7 +82,7 @@ define([
 
         _handleIntersection: function( entries, observer ) {
             entries.forEach( entry  => {
-                if ( this.imageCount <= 0 ) {
+                if ( this.targetsCount <= 0 ) {
                     this._disconnect();
                 }
 
@@ -83,6 +90,12 @@ define([
                     this._loadImage( entry.target );
                 }
             });
+        },
+
+        _handleLoad: function( event ) {
+            let $image = $(event.currentTarget);
+
+            $image.addClass( this.options.classes.afterLoad );
         },
 
         destroy: function() {

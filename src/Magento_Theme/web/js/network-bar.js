@@ -18,8 +18,8 @@ define([
         },
 
         _bind: function() {
-            $(window).on('offline.' + _namespace, this._setOffline.bind(this));
-            $(window).on('online.' + _namespace, this._setOnline.bind(this));
+            $(window).on('offline.' + _namespace, this._handleOffline.bind(this));
+            $(window).on('online.' + _namespace, this._handleOnline.bind(this));
         },
 
         _destroy: function() {
@@ -27,11 +27,11 @@ define([
             $(window).off('online.' + _namespace);
         },
 
-        _setOnline: function( event ) {
+        _handleOnline: function( event ) {
             this.element.removeClass( this.options.classes.offline );
         },
 
-        _setOffline: function( event ) {
+        _handleOffline: function( event ) {
             this.element.addClass( this.options.classes.offline );
         },
 

@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+
+?>
+
+<div class="app-header__title" data-block="app-title" data-bind="scope: 'title_block'">
+    <div data-bind="html: getValue()">
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "[data-block='app-title']": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "title_block": {
+                    "component": "Meanbee_PWA/js/app/view/block",
+                    "config": {
+                        "options": {
+                            "key": "block_app-title"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</script>

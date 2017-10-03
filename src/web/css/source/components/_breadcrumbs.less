@@ -1,0 +1,22 @@
+.breadcrumbs {
+    font-weight: 400;
+    margin: 0 auto;
+    max-width: @site-max-width;
+
+    .items {
+        display: flex;
+        margin: calc(var(--spacing-unit) ~"*" 2) 0;
+    }
+
+    .item {
+        &:not(:last-child):after {
+            content: "/";
+            margin: 0 var(--spacing-unit);
+        }
+    }
+
+    a,
+    strong {
+        font-weight: inherit;
+    }
+}

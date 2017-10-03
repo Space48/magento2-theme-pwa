@@ -11,15 +11,17 @@
 @import "source/components/_search-autocomplete.less";
 @import "source/components/_cart-link.less";
 @import "source/components/_fieldset.less";
+@import "source/components/_form.less";
+@import "source/components/_breadcrumbs.less";
+@import "source/components/_switcher-currency.less";
+@import "source/components/_network-notice.less";
 
 .block-title {
-    font-size: 1.5em;
-    text-align: center;
-    text-transform: uppercase;
+    font-size: 1.2em;
+    margin: var(--spacing-unit) 0;
 
     strong {
-        font-weight: 800;
-        letter-spacing: 0.025em;
+        font-weight: 600;
     }
 }
 
@@ -29,6 +31,10 @@ input.mage-error {
     &:focus {
         border-color: #da2128;
     }
+}
+
+input.valid {
+    border-color: @success-color;
 }
 
 div.mage-error {

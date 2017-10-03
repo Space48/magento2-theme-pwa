@@ -2,10 +2,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="report.bugs" remove="true" />
-        <referenceBlock name="top.links" remove="true" />
         <referenceBlock name="navigation.sections" remove="true" />
         <referenceBlock name="footer" remove="true" />
-        <referenceBlock name="currency" remove="true" />
+        <referenceBlock name="logo" remove="true" />
+        <referenceBlock name="breadcrumbs" remove="true" />
 
         <referenceBlock name="head.csspreload">
             <arguments>
@@ -35,25 +35,43 @@
             </arguments>
         </referenceBlock>
 
-        <move element="logo" destination="header-primary" />
-
-        <referenceContainer name="header-wrapper" htmlClass="page-header-inner content">
-            <container name="header-primary" as="header-primary" label="header primary" htmlTag="div" htmlClass="header-primary" before="-"/>
-            <container name="header-additional-actions" as="header-additional-actions" label="header additional actions" htmlTag="div" htmlClass="header-additional-actions"/>
+        <referenceContainer name="header.container">
+            <block name="lazy.load" class="Magento\Framework\View\Element\Template" template="Magento_Theme::img-lazy-load.phtml" />
         </referenceContainer>
 
+        <referenceContainer name="header-wrapper" htmlClass="page-header-inner content"/>
         <referenceContainer name="footer" htmlClass="page-footer-inner content" />
-        <referenceContainer name="page.messages" htmlClass="messages-wrapper" />
+        <referenceContainer name="page.messages" htmlClass="messages-wrapper">
+            <block name="network.monitor" class="Magento\Framework\View\Element\Template" template="Magento_Theme::network_bar.phtml" after="-" />
+        </referenceContainer>
 
-        <move element="page.messages" destination="page.wrapper" after="page.top" />
-        <move element="store.menu" destination="page.wrapper" after="header.container" />
-        <move element="register-link" destination="page.top" before="-" />
+        <!--<move element="register-link" destination="page.top" before="-" />-->
 
         <!-- Create a wrapper for main content -->
         <referenceContainer name="page.wrapper">
-            <container name="main.wrapper" as="main.wrapper" label="main wrapper" htmlTag="div" htmlClass="page-main-wrapper"/>
+            <container name="topheader" as="topheader" label="Page topheader" htmlTag="div" htmlClass="topheader" before="app-header" />
+            <container name="app-header" as="app-header" label="app header" htmlTag="div" htmlClass="app-header" before="header.container">
+                <block name="app-title" class="Magento\Theme\Block\Html\Title" template="Magento_Theme::html/header/title.phtml">
+                    <arguments>
+                        <argument name="pwa_response_include" xsi:type="boolean">true</argument>
+                    </arguments>
+                </block>
+                <block name="navigate.back" class="Magento\Framework\View\Element\Template" template="Meanbee_PWA::back.phtml" before="-" />
+            </container>
+            <container name="main.wrapper" as="main.wrapper" label="main wrapper" htmlTag="div" htmlClass="page-main-wrapper" htmlId="page-main-wrapper" />
         </referenceContainer>
 
-        <move element="main.content" destination="main.wrapper" />
+        <referenceContainer name="main.content">
+            <container name="main.header" as="main.header" label="main header" htmlTag="div" htmlClass="page-main-header" before="-" />
+        </referenceContainer>
+
+        <move element="logo" destination="main.wrapper" />
+        <move element="page.main.title" destination="main.header" />
+        <move element="catalog.topnav" destination="header-wrapper" after="my-account-link" />
+        <move element="page.messages" destination="page.wrapper" after="page.top" />
+        <move element="store.menu" destination="page.wrapper" after="header.container" />
+        <move element="main.content" destination="main.wrapper" /> 
+        <move element="pwa.content" destination="main.wrapper" after="-" />
+        <move element="header.panel.wrapper" destination="topheader" />
     </body>
 </page>

@@ -5,9 +5,10 @@
         <!-- Ensure minicart has its dependencies config available -->
         <move element="customer.section.config" destination="header.container" />
         <move element="customer.customer.data" destination="header.container" />
+        <move element="head.components" destination="main.content" />
 
         <referenceContainer name="header.container">
-            <block name="pwa.router" class="Magento\Framework\View\Element\Template" template="Meanbee_PWA::app-router.phtml" />
+            <block name="pwa.app" class="Magento\Framework\View\Element\Template" template="Meanbee_PWA::app-start.phtml" />
         </referenceContainer>
 
         <referenceContainer name="page.wrapper">
@@ -17,5 +18,7 @@
         </referenceContainer>
 
         <referenceContainer name="main.content" remove="true" />
+
+        <referenceBlock name="app-title" template="Magento_Theme::html/header/title-init.phtml" />
     </body>
 </page>

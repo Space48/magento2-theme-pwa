@@ -10,9 +10,11 @@
 ?>
 <?php if ($block->isWishListAllowed()) : ?>
     <a href="#"
-       class="action towishlist"
+       class="action towishlist button button-secondary"
        data-post='<?php /* @escapeNotVerified */ echo $block->getWishlistParams(); ?>'
-       data-action="add-to-wishlist"><span><?php /* @escapeNotVerified */ echo __('Add to Wish List') ?></span></a>
+       data-action="add-to-wishlist">
+        <span class="button-label"><?php /* @escapeNotVerified */ echo __('Add to Wish List') ?></span>
+    </a>
 <?php endif; ?>
 <script type="text/x-magento-init">
     {

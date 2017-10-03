@@ -1,0 +1,54 @@
+// Uses in OOTB Magento:
+// - Minicart
+// - Cart shipping
+// - Cart shipping rates
+// - Cart totals 
+// - Onepage checkout
+// - Checkout shipping
+// - Checkout summary
+// - Checkout email field
+// - Auth popup
+
+.loader {
+    align-items: center;
+    display: flex;
+
+    img {
+        display: none;
+    }
+}
+
+.loader:before {
+    animation: spin 1.1s infinite linear;
+    border: 3px solid @text-color;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    content: '';
+    display: block;
+    font-size: 3rem;
+    height: 1em;
+    margin: 0 auto;
+    transform: translateZ(0);
+    width: 1em;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}

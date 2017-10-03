@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="authentication-popup" remove="true" />
+        <referenceBlock name="register-link" remove="true" />
+    
+        <referenceBlock name="header-wrapper">
+            <block class="Magento\Customer\Block\Account\Link" name="my-account-link" before="-">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Account</argument>
+                    <argument name="class" xsi:type="string">login__link</argument>
+                    <argument name="template" xsi:type="string">Magento_Customer::page/html/account-link.phtml</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

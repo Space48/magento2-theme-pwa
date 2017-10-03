@@ -6,11 +6,15 @@
     <head <?php /* @escapeNotVerified */ echo $headAttributes ?> data-block="app-head" data-bind="scope: 'app_head'">
         <?php /* @escapeNotVerified */ echo $requireJs ?>
 
-        <!-- ko foreach: headItems -->
+        <!-- ko foreach: assetItems -->
             <!-- ko virtualHtml: $data --><!-- /ko -->
         <!-- /ko -->
 
-        <!-- ko if: !getProp('pwaShell') -->
+        <!-- ko foreach: additionalItems -->
+            <!-- ko virtualHtml: $data --><!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: !getProp('ready') -->
         <?php /* @escapeNotVerified */ echo $headContent ?>
         <?php /* @escapeNotVerified */ echo $headAdditional ?>
         <!-- /ko -->
@@ -21,7 +25,7 @@
             "Magento_Ui/js/core/app": {
                 "components": {
                     "app_head": {
-                        "component": "Meanbee_PWA/js/view/app-head"
+                        "component": "Meanbee_PWA/js/app/view/head"
                     }
                 }
             }

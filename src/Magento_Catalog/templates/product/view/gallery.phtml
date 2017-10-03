@@ -14,12 +14,12 @@
 ?>
 <div class="gallery-placeholder _block-content-loading" data-gallery-role="gallery-placeholder">
     <div data-role="loader" class="loading-mask">
-        <div class="loader">
-            <img src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>"
-                 alt="<?php /* @escapeNotVerified */ echo __('Loading...') ?>">
-        </div>
+        <?php $_firstImage = $block->getGalleryImages()->getFirstItem() ?>
+        <img class="gallery-placeholder-image" src="<?php echo $_firstImage->getData('medium_image_url') ?>" alt="" height="<?php echo $block->getImageAttribute('product_page_image_medium', 'height') ?>" width="<?php echo $block->getImageAttribute('product_page_image_medium', 'width'); ?>" />
+        <div class="loader"></div>
     </div>
 </div>
+
 <!--Fix for jumping content. Loader must be the same size as gallery.-->
 <script>
     var config = {
@@ -35,9 +35,8 @@
     if (config.navtype === 'horizontal') {
         thumbBarHeight = config.thumbheight;
     }
-
-    loader.style.minHeight = config.height + 'px';
 </script>
+
 <script type="text/x-magento-init">
     {
         "[data-gallery-role=gallery-placeholder]": {

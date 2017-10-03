@@ -1,7 +1,46 @@
-.product-reviews-summary {
+.rating-summary {
+    margin-right: calc(var(--spacing-unit) ~"/" 2);
 
+    .label {
+        .screenreader();
+    }
 }
 
-.rating-summary {
+.rating {
+    width: 4.9em;
+}
 
+.rating-star,
+.rating-result {
+    display: block;
+    height: 1em;
+}
+
+.rating-result {
+    background: transparent url(../images/icons/star-empty.svg) repeat-x left center;
+    background-size: contain;
+}
+
+.rating-star {
+    background: transparent url(../images/icons/star.svg) repeat-x left center;
+    background-size: contain;
+
+    span {
+        .screenreader();
+    }
+}
+
+.reviews-summary-short {
+    display: flex;
+    align-items: center;
+
+    .reviews-actions {
+        flex-grow: 0;
+    }
+}
+
+.reviews-actions {
+    display: inline-flex;
+    font-size: .8em;
+    flex-grow: 1;
 }

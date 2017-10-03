@@ -1,0 +1,61 @@
+.customer-account-login,
+.customer-account-forgotpassword,
+.customer-account-create {
+    --show-navbar: none;
+    background-color: @background-grey;
+
+    @media screen and (min-width: @medium-breakpoint) {
+        --show-navbar: block;
+    }
+}
+
+.login-container,
+.form.forget,
+.form-create-account,
+.form-address-edit {
+    max-width: @small-medium-breakpoint;
+    padding: calc(var(--spacing-unit) ~"*" 2);
+
+    @media screen and (min-width: @small-medium-breakpoint) {
+        margin: calc(var(--spacing-unit) ~"*" 2) auto;
+        padding: calc(var(--spacing-unit) ~"*" 4) calc(var(--spacing-unit) ~"*" 10);
+    }
+
+    .legend {
+        .screenreader();
+    }
+
+    .block-title {
+        .screenreader();
+    }
+    
+    .actions-toolbar {
+        text-align: center;
+
+        .primary {
+            margin: var(--spacing-unit) 0;
+        }
+
+        .action.primary {
+            width: 100%;
+        }
+
+        .action.back {
+            display: none;
+        }
+
+        .action.remind {
+            text-decoration: underline;
+        }
+
+        .action.create {
+            font-weight: 600;
+            letter-spacing: .025em;
+            text-transform: uppercase;
+        }
+    }
+
+    .block-new-customer {
+        margin-top: calc(var(--spacing-unit) ~"*" 8);
+    }
+}

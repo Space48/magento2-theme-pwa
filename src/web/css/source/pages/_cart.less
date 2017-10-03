@@ -11,18 +11,44 @@
 }
 
 .cart-empty {
+    padding-bottom: 6vh;
     text-align: center;
+
+    .buttons-group {
+        display: flex;
+        margin: 0 auto;
+        max-width: 24rem;
+        justify-content: center;
+    }
+
+    .button {
+        flex: 1 1 0;
+    }
 }
 
 .cart-empty-heading {
-    margin-bottom: 0;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.cart-empty-content {
+    margin-bottom: calc(var(--spacing-unit) ~"*" 3);
+
+    p {
+        margin: calc(var(--spacing-unit) ~"/" 2) 0;
+    }
 }
 
 .checkout-cart-index {
+    --show-navbar: none;
+
+    @media screen and (min-width: @medium-breakpoint) {
+        --show-navbar: block;
+    }
+
     .page-title {
         padding-left: 0;
         padding-right: 0;
-        text-align: left;
     }
 
     .table-caption {
@@ -31,7 +57,7 @@
 
     // TODO: Refactor
     .crosssell {
-        margin: calc(var(--vertical-spacing-unit) ~"*" 2) 0;
+        margin: calc(var(--spacing-unit) ~"*" 2) 0;
     }
 
     .crosssell .title {
@@ -44,11 +70,25 @@
     }
 
     .checkout-methods-items {
-        margin: var(--vertical-spacing-unit) 0;
+        margin: var(--spacing-unit) 0;
     }
 
     .block.discount {
         max-width: 30em;
+        .card();
+
+        .label {
+            .screenreader();
+        }
+    }
+
+    .block.shipping {
+        display: none;
+        .card();
+
+        dd {
+            margin-left: 0;
+        }
     }
 }
 
@@ -58,21 +98,29 @@
     }
 
     .summary.title {
+        .screenreader();
+
         display: block;
         font-size: 1.5em;
         font-weight: 400;
-        margin: 1em 0;
+        margin: var(--spacing-unit) 0;
         text-transform: uppercase;
     }
 }
 
 .cart-list {
+    margin-top: calc(var(--spacing-unit) ~"*" 2) 0;
+
     .item {
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
         display: flex;
-        padding: var(--vertical-spacing-unit) 0;
+        padding: calc(var(--spacing-unit) ~"*" 2) 0;
     }
 
     .item-options {
+        font-size: .857rem;
+
         &:after {
             clear: both;
         }
@@ -98,37 +146,83 @@
             content: ":";
         }
     }
+
+    .item-image {
+        padding: 0 var(--spacing-unit);
+        width: 150px;
+    }
+}
+
+.cart.actions {
+    display: none; // temp
+}
+
+.cart-totals {
+    .card();
+    margin: 0 auto;
+
+    .amount {
+        text-align: right;
+    }
+
+    .grand.totals {
+        font-size: 1.2em;
+    }
 }
 
 .item-info {
 
 }
 
-.item-image {
-
-}
-
 @media screen and (min-width: @medium-breakpoint) {
     .cart-container {
-        display: grid;
-        grid-template: 1fr min-content ~"/" 2fr 0.6fr;
-        grid-template-areas: "main sidebar" "main2 sidebar2" "main3 sidebar3";
-        grid-row-gap: var(--vertical-spacing-unit);
-    }
-
-    .cart-summary {
-        grid-area: sidebar;
+        margin: 0 auto;
+        max-width: 1000px;
     }
 
     .form-cart {
-        grid-area: main;
+        margin: calc(var(--spacing-unit) ~"*" 3) auto;
     }
 
-    .gift-options-cart {
-        grid-area: main2;
+    .cart-summary {
+        float: right;
+        width: 50%;
     }
 
-    .block.discount {
-        grid-area: main3;
+    .checkout-cart-index .block.discount {
+        float: left;
+        margin-top: 0;
+        margin-left: 0;
+        width: 40%;
     }
+
+    .cart-list .item-info {
+        align-items: center;
+        display: inline-flex;
+        flex-grow: 1;
+        justify-content: space-between;
+        padding: 0 calc(var(--spacing-unit) ~"*" 3);
+    }
+    // .cart-container {
+    //     display: grid;
+    //     grid-template: 1fr min-content ~"/" 2fr 0.6fr;
+    //     grid-template-areas: "main sidebar" "main2 sidebar2" "main3 sidebar3";
+    //     grid-row-gap: var(--spacing-unit);
+    // }
+
+    // .cart-summary {
+    //     grid-area: sidebar;
+    // }
+
+    // .form-cart {
+    //     grid-area: main;
+    // }
+
+    // .gift-options-cart {
+    //     grid-area: main2;
+    // }
+
+    // .block.discount {
+    //     grid-area: main3;
+    // }
 }

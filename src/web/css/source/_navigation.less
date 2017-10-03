@@ -1,13 +1,30 @@
 .nav-toggle {
+    color: #fff;
     display: inline-block;
-    width: 2em;
+    font-size: 2.1rem;
+    text-align: center;
+    vertical-align: middle;
+
+    .icon {
+        display: block;
+        line-height: 1;
+    }
+
+    svg {
+        fill: @subtext-color;
+        display: block;
+        height: 1em;
+        width: 1em;
+    }
 
     @media screen and (min-width: @medium-breakpoint) {
         display: none;
     }
 
     &__label {
-        .screenreader();
+        color: @text-color;
+        display: block;
+        font-size: .7rem;
     }
 }
 
@@ -15,31 +32,41 @@
     @media screen and (min-width: @medium-breakpoint) {
         display: flex;
         justify-content: space-around;
+        left: 0;
+        margin-right: auto;
+        margin-left: auto;
+        position: absolute;
+        right: 0;
+
+        ul {
+            align-items: center;
+            display: flex;
+        }
 
         .level-top {
             display: inline-block;
         }
 
         .submenu.level0 {
-            background-color: @skeleton-color;
+            align-items: flex-start;
+            background-color: #fff;
+            box-shadow: @card-box-shadow;
             display: none;
-            left: 0 !important;
             margin: 0 auto;
             max-width: var(--site-max-width);
-            padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
+            padding: calc(var(--spacing-unit) ~"*" 4);
             position: absolute;
-            right: 0;
-            width: 100%;
             z-index: 1;
 
             .submenu {
                 display: block !important;
+                padding-top: var(--spacing-unit);
                 top: 0 !important;
             }
 
             > li {
                 display: inline-block;
-                padding-right: 3rem;
+                padding-right: calc(var(--spacing-unit) ~"*" 3);
                 min-width: 200px;
                 vertical-align: top;
             }
@@ -47,18 +74,30 @@
 
         li.level1 > a {
             font-weight: 600;
+            font-family: "PT Sans Narrow", sans-serif;
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        ul.level1 a {
+            font-weight: 400;
         }
 
         a.level-top {
+            color: @subtext-color;
             display: block;
-            letter-spacing: .05em;
-            padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
+            font-size: 1.1em;
+            font-family: "PT Sans Narrow", sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            padding: var(--spacing-unit) calc(var(--spacing-unit) ~"*" 2);
             text-transform: uppercase;
         }
     }
 
     @media screen and (max-width: @medium-breakpoint) {
         background: #FFF;
+        padding: calc(var(--spacing-unit) ~"*" 2);
         position: fixed;
         width: 75%;
         height: 120%;
@@ -67,10 +106,27 @@
         -webkit-transform: translate3d(-102%, 0, 0);
         transform: translate3d(-102%, 0, 0);
         will-change: transform;
-        box-shadow: 3px 0 8px 1px rgba(0, 0, 0, .4);
+        width: 100%;
+        z-index: 1;
 
         .nav-open & {
             transform: translate3d(0px, 0px, 0px);
+        }
+
+        li.level-top>a {
+            font-family: "PT Sans Narrow", sans-serif;
+            font-size: 1.2em;
+            text-transform: uppercase;
+        }
+
+        a {
+            display: block;
+            padding: calc(var(--spacing-unit) ~"*" 2);
+        }
+
+        .submenu {
+            top: 0 !important;
+            padding: 0 calc(var(--spacing-unit) ~"*" 2);
         }
     }
 

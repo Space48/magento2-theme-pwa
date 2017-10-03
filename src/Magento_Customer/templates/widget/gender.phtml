@@ -8,7 +8,7 @@
 
 ?>
 <div class="field gender<?php if ($block->isRequired()) echo ' required' ?>">
-    <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('gender')?>"><span><?php /* @escapeNotVerified */ echo __('Gender') ?></span></label>
+    <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('gender')?>" data-required="<?php echo $block->isRequired() ? __('*') : __('(Optional)') ?>"><span><?php /* @escapeNotVerified */ echo __('Gender') ?></span></label>
     <div class="control">
         <select id="<?php /* @escapeNotVerified */ echo $block->getFieldId('gender')?>" name="<?php /* @escapeNotVerified */ echo $block->getFieldName('gender')?>" title="<?php /* @escapeNotVerified */ echo __('Gender') ?>"<?php if ($block->isRequired()):?> class="validate-select" data-validate="{required:true}"<?php endif; ?> <?php /* @escapeNotVerified */ echo $block->getFieldParams() ?>>
             <?php $options = $block->getGenderOptions(); ?>

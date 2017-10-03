@@ -1,14 +1,16 @@
 .search-autocomplete {
+    padding: var(--spacing-unit) 0;
     width: 100% !important;
 
     li {
         cursor: pointer;
-        padding: var(--vertical-spacing-unit) var(--horizontal-spacing-unit);
+        padding: var(--spacing-unit) var(--spacing-unit);
+        padding-left: 4.5rem;
 
         &:focus,
         &:hover,
         &.selected {
-            background-color: darken(@skeleton-color, 10%);
+            background-color: lighten(@background-grey, 3%);
         }
     }
 
@@ -22,7 +24,7 @@
 
     mark {
         background-color: transparent;
-        color: inherit;
+        color: #666;
         font-weight: 400;
     }
 }

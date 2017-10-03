@@ -5,13 +5,15 @@
  */
 -->
 <!-- ko if: isDisplayed() -->
-<table class="data table table-totals">
-    <caption class="table-caption" data-bind="i18n: 'Order Summary'"></caption>
-    <tbody>
-    <!-- ko foreach: elems() -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-    <!-- /ko -->
-    </tbody>
-</table>
+<div class="table-totals-wrapper">
+    <table class="data table table-totals">
+        <caption class="table-caption" data-bind="i18n: 'Order Summary'"></caption>
+        <tbody>
+        <!-- ko foreach: elems() -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        <!-- /ko -->
+        </tbody>
+    </table>
+</div>
 <!-- /ko -->
     

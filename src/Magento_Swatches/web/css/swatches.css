@@ -1,9 +1,7 @@
 .swatch-attribute-label {
     display: inline-block;
-    font-weight: bold;
-    margin: 1em 0 .25em;
+    margin: .5em 0;
     position: relative;
-    text-transform: uppercase;
 }
 
 .swatch-attribute-label.required {
@@ -25,11 +23,10 @@
 }
 
 .swatch-option {
-    border: 1px solid rgb(218, 218, 218);
     cursor: pointer;
     display: inline-block;
     height: 1.5em;
-    margin: 0 .5em .5em 0;
+    margin: 0 .25em .5em;
     max-width: 4em;
     min-width: 2em;
     text-align: center;
@@ -39,27 +36,48 @@
     vertical-align: middle;
 }
 
-.swatch-option__text {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
+/* This is nasty but saves hours in Magento */
+/* .swatch-option[option-tooltip-value="#ffffff"] {
+    border: 1px solid rgba(0, 0, 0, .1);
+} */
+
+.swatch-option.color {
+    height: 1.5em;
+    min-width: inherit;
+    overflow: visible;
+    position: relative;
+    width: 1.5em;
+}
+
+.swatch-option.color:first-child {
+    margin-left: 0;
+}
+
+.swatch-option.color.selected:after,
+.swatch-option.color:hover:after {
+    box-shadow: inset 0 0 0 1px #000, inset 0 0 0 3px #f3f4f6;
+    content: '';
+    height: 1.8em;
+    left: -.15em;
     position: absolute;
-    white-space: nowrap;
-    width: 1px;
+    top: -.15em;
+    width: 1.8em;
 }
 
 .swatch-option.text {
-    border-color: #000;
+    align-items: center;
+    border-color: rgba(0, 0, 0, .1);
     color: #000;
+    display: flex;
     font-size: 1em;
-    font-weight: 700;
+    font-weight: 600;
+    justify-content: center;
+    margin: -1px 0 0 -1px;
     min-width: 2em;
 }
 
-.swatch-option.selected {
+.swatch-option.text:hover,
+.swatch-option.text.selected {
     background-color: #000;
     border-color: #000;
     color: #fff;
@@ -67,28 +85,15 @@
 
 .swatch-attribute.size .swatch-option,
 .swatch-attribute.manufacturer .swatch-option {
-    line-height: 0;
-    padding: 1em;
+    padding: 1.5em;
 }
 
 .swatch-option.disabled {
     cursor: default;
 }
 
-.swatch-option.disabled:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top:0;
-    bottom: 0;
-    background: -moz-linear-gradient(to left top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 42%, rgba(255,255,255,1) 43%, rgba(255,255,255,1) 46%, rgba(255,82,22,1) 47%, rgba(255,82,22,1) 53%, rgba(255,255,255,1) 54%, rgba(255,255,255,1) 57%, rgba(255,255,255,0) 58%, rgba(255,255,255,0) 100%);
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(42%,rgba(255,255,255,0)), color-stop(43%,rgba(255,255,255,1)), color-stop(46%,rgba(255,255,255,1)), color-stop(47%,rgba(255,82,22,1)), color-stop(53%,rgba(255,82,22,1)), color-stop(54%,rgba(255,255,255,1)), color-stop(57%,rgba(255,255,255,1)), color-stop(58%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0)));
-    background: -webkit-linear-gradient(to left top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 42%,rgba(255,255,255,1) 43%,rgba(255,255,255,1) 46%,rgba(255,82,22,1) 47%,rgba(255,82,22,1) 53%,rgba(255,255,255,1) 54%,rgba(255,255,255,1) 57%,rgba(255,255,255,0) 58%,rgba(255,255,255,0) 100%);
-    background: -o-linear-gradient(to left top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 42%,rgba(255,255,255,1) 43%,rgba(255,255,255,1) 46%,rgba(255,82,22,1) 47%,rgba(255,82,22,1) 53%,rgba(255,255,255,1) 54%,rgba(255,255,255,1) 57%,rgba(255,255,255,0) 58%,rgba(255,255,255,0) 100%);
-    background: -ms-linear-gradient(to left top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 42%,rgba(255,255,255,1) 43%,rgba(255,255,255,1) 46%,rgba(255,82,22,1) 47%,rgba(255,82,22,1) 53%,rgba(255,255,255,1) 54%,rgba(255,255,255,1) 57%,rgba(255,255,255,0) 58%,rgba(255,255,255,0) 100%);
-    background: linear-gradient(to left top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 42%,rgba(255,255,255,1) 43%,rgba(255,255,255,1) 46%,rgba(255,82,22,1) 47%,rgba(255,82,22,1) 53%,rgba(255,255,255,1) 54%,rgba(255,255,255,1) 57%,rgba(255,255,255,0) 58%,rgba(255,255,255,0) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 );
+.swatch-option.disabled {
+    opacity: .3;
 }
 
 .swatch-opt {
@@ -104,10 +109,33 @@
 }
 
 /* Layered Features */
+.swatch-layered.size .swatch-attribute-options {
+    display: flex;
+}
+
 .swatch-option-link-layered {
+    align-items: center;
+    display: inline-flex;
     position: relative;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: .5rem 0;
+}
+
+.swatch-option-link-layered .swatch-option.color {
+    margin: 0 1em 0 0;
+    order: -1;
+}
+
+.swatch-option__text {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
 }
 
 .swatch-option-disabled:after {
@@ -135,8 +163,4 @@
 /* Bugfix for Add To Cart button */
 .swatch-opt-listing {
     margin-bottom: 10px;
-}
-
-.swatch-option-loading {
-    content: url("../images/loader-2.gif");
 }

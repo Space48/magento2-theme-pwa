@@ -1,18 +1,20 @@
 .cart-link {
     display: block;
 
-    &__label,
     &__count--long {
         .screenreader();
     }
 
     &__icon {
         display: block;
-        fill: #000;
-        width: 1em;
+        font-size: 2.1rem;
+        text-align: center;
 
         svg {
             display: block;
+            fill: @subtext-color;
+            height: 1em;
+            width: 1em;
         }
     }
 
@@ -41,5 +43,14 @@
         top: -.5em;
         height: 1.5em;
         width: 1.5em;
+    }
+
+    &__label {
+        display: block;
+        font-size: .7rem;
+    }
+
+    .loader {
+        display: none;
     }
 }

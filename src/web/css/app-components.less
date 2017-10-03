@@ -3,8 +3,13 @@
 @import "source/components/_buttons.less";
 @import "source/components/_buttons-group.less";
 @import "source/components/_messages.less";
+@import "source/components/_placeholder.less";
+@import "source/components/_card.less";
 @import "source/components/_price-box.less";
 @import "source/components/_products-grid.less";
+@import "source/components/_products-list.less";
+@import "source/components/_reviews-summary.less";
+@import "source/components/_review-item.less";
 @import "source/components/_filter.less";
 @import "source/components/_pages.less";
 @import "source/components/_modes.less";
@@ -13,9 +18,21 @@
 @import "source/components/_toolbar.less";
 @import "source/components/_minicart.less";
 @import "source/components/_fotorama.less";
+@import "source/components/_modal-popup.less";
+@import "source/components/_loader.less";
+@import "source/components/_discount-code.less";
 
 .page-title {
-    margin: 0;
-    padding: var(--vertical-spacing-unit);
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-size: 1.25rem;
+    padding: var(--spacing-unit);
     text-align: center;
+    text-transform: uppercase;
+
+    @media screen and (min-width: @medium-breakpoint) {
+        font-size: 2.441em;
+        font-weight: 600;
+        letter-spacing: .05em;
+    }
 }
+    

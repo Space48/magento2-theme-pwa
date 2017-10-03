@@ -7,10 +7,10 @@
 <?php /** @var $block \Magento\Catalog\Block\Product\Image */ ?>
 
 <span class="product-image-container">
-    <span class="product-image-wrapper">
-        <img class="product-image-photo"
+    <span data-lazy class="product-image-wrapper placeholder__wrapper">
+        <img class="product-image-photo placeholder__image"
             <?php /* @escapeNotVerified */ echo $block->getCustomAttributes(); ?>
-             src="<?php /* @escapeNotVerified */ echo $block->getImageUrl(); ?>"
+             data-src="<?php /* @escapeNotVerified */ echo $block->getImageUrl(); ?>"
              width="<?php /* @escapeNotVerified */ echo $block->getResizedImageWidth(); ?>"
              height="<?php /* @escapeNotVerified */ echo $block->getResizedImageHeight(); ?>"
              alt="<?php /* @escapeNotVerified */ echo $block->stripTags($block->getLabel(), null, true); ?>"/></span>

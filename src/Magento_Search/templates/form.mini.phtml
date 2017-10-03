@@ -15,13 +15,13 @@ $helper = $this->helper('Magento\Search\Helper\Data');
     <div class="block block-content">
         <form class="form minisearch" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
             <span class="minisearch__trigger">
-                <button class="icon" aria-label="<?php echo __('Search') ?>"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/search.svg') ?></button>
+                <button type="button" class="icon" aria-label="<?php echo __('Search') ?>"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/search.svg') ?></button>
                 <span class="minisearch__trigger-label"><?php echo __('Search') ?></span>
             </span>
             <div class="field search">
                 <div class="minisearch__body" id="minisearch-body">
                     <div class="control">
-                        <button type="image" class="minisearch__back" aria-label="<?php echo __('Back') ?>">
+                        <button type="button" class="minisearch__back" aria-label="<?php echo __('Back') ?>">
                             <?php echo $block->getData('svgHelper')->getViewSvg('images/icons/back.svg') ?>
                         </button>
                         <div class="minisearch__field">
@@ -48,7 +48,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                                    autocomplete="off"/>
                             <div id="search_autocomplete" class="search-autocomplete"></div>
                         </div>
-                        <button type="image" class="minisearch__clear" aria-label="<?php echo __('Clear') ?>"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/clear.svg') ?></button>
+                        <button type="button" class="minisearch__clear" aria-label="<?php echo __('Clear') ?>"><?php echo $block->getData('svgHelper')->getViewSvg('images/icons/clear.svg') ?></button>
                         <?php echo $block->getChildHtml() ?>
                     </div>
                     <div class="actions">

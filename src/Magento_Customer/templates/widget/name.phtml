@@ -42,7 +42,7 @@ $suffix = $block->showSuffix();
 
     <?php if ($prefix): ?>
         <div class="field field-name-prefix<?php if ($block->isPrefixRequired()) echo ' required' ?>">
-            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('prefix') ?>">
+            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('prefix') ?>" data-required="<?php echo $block->isPrefixRequired() ? __('*') : __('(Optional)') ?>">
                 <span><?php /* @escapeNotVerified */ echo $block->getStoreLabel('prefix') ?></span>
             </label>
 
@@ -69,7 +69,7 @@ $suffix = $block->showSuffix();
         </div>
     <?php endif; ?>
         <div class="field field-name-firstname required">
-            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('firstname') ?>">
+            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('firstname') ?>" data-required="<?php echo __('*') ?>">
                 <span><?php /* @escapeNotVerified */ echo $block->getStoreLabel('firstname') ?></span>
             </label>
 
@@ -84,7 +84,7 @@ $suffix = $block->showSuffix();
     <?php if ($middle): ?>
         <?php $isMiddlenameRequired = $block->isMiddlenameRequired(); ?>
         <div class="field field-name-middlename<?php echo $isMiddlenameRequired ? ' required' : '' ?>">
-            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('middlename') ?>">
+            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('middlename') ?>" data-required="<?php echo $isMiddlenameRequired ? __('*') : __('(Optional)') ?>">
                 <span><?php /* @escapeNotVerified */ echo $block->getStoreLabel('middlename') ?></span>
             </label>
 
@@ -98,7 +98,7 @@ $suffix = $block->showSuffix();
         </div>
     <?php endif; ?>
         <div class="field field-name-lastname required">
-            <label class="label"  for="<?php /* @escapeNotVerified */ echo $block->getFieldId('lastname') ?>">
+            <label class="label"  for="<?php /* @escapeNotVerified */ echo $block->getFieldId('lastname') ?>" data-required="<?php echo __('*') ?>">
                 <span><?php /* @escapeNotVerified */ echo $block->getStoreLabel('lastname') ?></span>
             </label>
 
@@ -112,7 +112,7 @@ $suffix = $block->showSuffix();
         </div>
     <?php if ($suffix): ?>
         <div class="field field-name-suffix<?php if ($block->isSuffixRequired()) echo ' required' ?>">
-            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('suffix') ?>">
+            <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('suffix') ?>" data-required="<?php echo $block->isSuffixRequired() ? __('*') : __('(Optional)') ?>">
                 <span><?php /* @escapeNotVerified */ echo $block->getStoreLabel('suffix') ?></span>
             </label>
 

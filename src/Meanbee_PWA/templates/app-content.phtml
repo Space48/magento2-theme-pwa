@@ -1,12 +1,22 @@
-<div class="app__content" data-block="app-content" data-bind="scope: 'app_content'">
-    <div data-bind="html: getContent()"></div>
+<div data-block="app-content" data-bind="scope: 'content_block'">
+    <div class="app__content-wrapper" data-bind="css: loadingStatus">
+        <div class="loader"></div>
+        <div class="app__content" id="app-content" data-bind="html: getValue()"></div>
+    </div>
     <script type="text/x-magento-init">
     {
         "[data-block='app-content']": {
             "Magento_Ui/js/core/app": {
                 "components": {
-                    "app_content": {
-                        "component": "Meanbee_PWA/js/view/app-content"
+                    "content_block": {
+                        "component": "Meanbee_PWA/js/app/view/block",
+                        "config": {
+                            "options": {
+                                "clean": true,
+                                "cleanElement": "#app-content",
+                                "key": "content"
+                            }
+                        }
                     }
                 }
             }
