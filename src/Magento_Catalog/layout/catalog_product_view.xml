@@ -21,6 +21,14 @@
             </container>
         </referenceContainer>
 
+        <referenceBlock name="product.info.addtocart.additional">
+            <block name="addtocart.flyout.additional" class="Magento\Checkout\Block\Cart\Sidebar" template="Magento_Catalog::product/view/flyout.phtml" />
+        </referenceBlock>
+
+        <referenceBlock name="product.info.addtocart">
+            <block name="addtocart.flyout" class="Magento\Checkout\Block\Cart\Sidebar" template="Magento_Catalog::product/view/flyout.phtml" />
+        </referenceBlock>
+
         <move element="product.info.main" destination="product.aside" />
 
         <referenceBlock name="app-title">
