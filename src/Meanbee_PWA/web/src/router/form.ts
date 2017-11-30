@@ -8,19 +8,17 @@ import $ = require("jquery");
 import _ = require("underscore");
 
 // References
-import HistoryTracker = require("../history");
 import Router = require("../router");
 
 const Form = (function() {
-    let history: HistoryTracker;
     let router: Router;
     let eventNamespace: string = "Form";
 
     /**
      * @param {Router} router
      */
-    function init(router: Router) {
-        router = router;
+    function init(routerInstance: Router) {
+        router = routerInstance;
         _bind();
 
         const public_api = {
@@ -93,15 +91,19 @@ const Form = (function() {
 
         event.preventDefault();
         const formMethod = formTarget.prop("method") || "post";
-        const additionalData = [data];
-        const formData = formTarget.serializeArray().concat(additionalData);
+        const additionalData = data;
+        const formData = formTarget.serializeArray();
+
+        additionalData && formData.concat([additionalData]);
 
         router.invalidateMessages();
-        router.resolve({
+        const req = router.resolve({
             data: formData,
             method: formMethod,
             url: url.href
         });
+
+        req();
     }
 
     /**

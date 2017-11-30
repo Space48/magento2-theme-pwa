@@ -54,7 +54,7 @@ class Router {
                 throw new Error(`${value} requires a callable signature`);
             }
 
-            value.call(null, this);
+            value.call(value, this);
         });
 
         $(document).on(
@@ -274,10 +274,7 @@ class Router {
                     url: to.url.href
                 });
 
-                try {
-                    await resolve();
-                } catch (e) {}
-
+                await resolve();
                 this._restoreScroll(to.state.scrollY);
             };
 
@@ -293,18 +290,12 @@ class Router {
      */
     resolve(request: DataStoreRequest) {
         return async () => {
-            let result = null;
-
             this._routeBefore();
 
-            try {
-                result = await this.dataStore.fetch(request);
-            } catch (e) {}
-
+            const result = await this.dataStore.fetch(request);
             this._compareHistory(request, result);
             this.dataStore.update(result);
             this._routeAfter();
-
             return result;
         };
     }
