@@ -11,9 +11,6 @@ if [ $(find $MAGENTO_ROOT -maxdepth 0 -type d -empty 2>/dev/null) ]; then
     composer config repositories.meanbee_helpers_pwa vcs git@github.com:meanbee/magento2-pwa.git
     composer require "meanbee/magento2-pwa" "@dev"
 
-    composer config repositories.meanbee_csspreload vcs git@github.com:meanbee/magento2-csspreload.git
-    composer require "meanbee/magento2-csspreload" "@dev"
-
     # Add the extension via Composer
     composer config repositories.meanbee_theme_pwa '{"type": "path", "url": "/src", "options": {"symlink": true}}'
 
@@ -24,10 +21,9 @@ if [ $(find $MAGENTO_ROOT -maxdepth 0 -type d -empty 2>/dev/null) ]; then
 fi
 
 # Set the default store theme. Uses a magic number for the theme ID, but there's no easy way of getting it by name.
-magerun2 config:set design/theme/theme_id 4
+magerun2 config:store:set design/theme/theme_id 4
 magento-command indexer:reindex design_config_grid
 
 magento-command setup:upgrade
 magento-command setup:di:compile
-magento-command setup:static-content:deploy
 magento-command cache:flush
