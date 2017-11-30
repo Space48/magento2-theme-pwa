@@ -121,7 +121,7 @@ class DataStore {
         return $.ajax(url, {
             data: body,
             method: "post",
-            cache: false,
+            cache: true,
             xhrFields: {
                 withCredentials: true
             }
@@ -143,7 +143,7 @@ class DataStore {
 
         return $.ajax(requestUrl, {
             method: "get",
-            cache: false,
+            cache: true,
             xhrFields: {
                 withCredentials: true
             }
