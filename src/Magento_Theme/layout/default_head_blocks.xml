@@ -8,7 +8,7 @@
     </head>
     <body>
         <referenceBlock name="head.additional">
-            <block class="Magento\Framework\View\Element\Template" name="meanbee-theme-pwa.head-additional" as="meanbee-theme-pwa.google-font" template="Magento_Theme::head_additional.phtml" />
+            <block class="Magento\Framework\View\Element\Template" name="meanbee-theme-pwa.head-assets" as="meanbee-theme-pwa.head-assets" template="Magento_Theme::head-assets.phtml" />
         </referenceBlock>
     </body>
 </page>
