@@ -35,6 +35,9 @@ const Block = Component.extend({
         this.createSubscription(this.options.key);
         this.loadingStatus = ko.observable();
 
+        const data = this.dataStore.get(this.options.key)();
+        this.update(data);
+
         return this._super();
     },
 
@@ -74,7 +77,7 @@ const Block = Component.extend({
             return;
         }
 
-        var target = $(this.options.cleanElement).children();
+        const target = $(this.options.cleanElement).children();
         if (target.length) {
             target.each(function(index, element) {
                 ko.cleanNode(element) && ko.applyBindings({}, element);
