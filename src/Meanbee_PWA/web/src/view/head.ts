@@ -15,17 +15,19 @@ const Head = Component.extend({
      */
     initialize() {
         this.dataStore = SPA.getDataStore();
-
-        const assetObservable = this.dataStore.get("assets");
-        const headObservable = this.dataStore.get("head");
-
+        this.headObservable = this.dataStore.get("head");
+        this.assetObservable = this.dataStore.get("assets");
         this.assetItems = ko.observableArray();
         this.additionalItems = ko.observableArray();
 
-        this.update(assetObservable(), this.assetItems);
-        this.update(headObservable(), this.additionalItems);
-        this._sub(assetObservable, this.assetItems);
-        this._sub(headObservable, this.additionalItems);
+        const assetData = this.htmlStringToArray(this.assetObservable());
+        const headData = this.htmlStringToArray(this.headObservable());
+
+        this.update(this.assetItems, assetData);
+        this.update(this.additionalItems, headData);
+
+        this._sub(this.assetObservable, this.assetItems);
+        this._sub(this.headObservable, this.additionalItems);
 
         return this._super();
     },
@@ -45,7 +47,7 @@ const Head = Component.extend({
         return provider.subscribe(data => {
             const arrayData = this.htmlStringToArray(data);
 
-            this.update(arrayData, target);
+            this.update(target, arrayData);
         });
     },
 
@@ -86,28 +88,24 @@ const Head = Component.extend({
      * @param {ObservableArray} observableArray
      * @returns void
      */
-    update(data = [], observableArray: KnockoutObservableArray<string>) {
+    update(observableArray: KnockoutObservableArray<string>, data = []) {
         const observableValue = observableArray();
 
         if (_.isEmpty(data)) {
             return false;
         }
 
-        data
-            .filter((value, index) => {
-                return !observableValue.includes(value);
-            })
-            .forEach((value, index) => {
-                value.length && observableArray.push(value);
-            });
+        const newValues = filter(data, observableValue);
+        newValues.map(value => observableArray.push(value));
 
-        observableValue
-            .filter((value, index) => {
-                return !data.includes(value);
-            })
-            .forEach((value, index) => {
-                observableArray.remove(value);
+        const oldValues = filter(observableValue, data);
+        oldValues.map(value => observableArray.remove(value));
+
+        function filter(data: string[], matcher: string[]) {
+            return data.filter((value: string, index) => {
+                return !matcher.includes(value) && value.length;
             });
+        }
     }
 });
 
