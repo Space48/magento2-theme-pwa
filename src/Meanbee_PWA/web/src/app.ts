@@ -62,8 +62,20 @@ const App = {
         const routerMeta = this.store.get("meta");
 
         routerMeta.subscribe((updatedState: PWA_Meta) => {
-            document.title = updatedState.title;
+            const title = updatedState && updatedState.title;
+
+            if (!title) {
+                return;
+            }
+
+            document.title = decodeEntities(title);
         });
+
+        function decodeEntities(encodedString) {
+            var textArea = document.createElement("textarea");
+            textArea.innerHTML = encodedString;
+            return textArea.value;
+        }
     },
 
     /**
