@@ -28,11 +28,11 @@
   },
   "require": {
     "magento/framework": "^101.0.0",
-    "meanbee/magento2-serviceworker": "^2.0",
-    "meanbee/magento2-webappmanifest": "^1.0",
-    "meanbee/magento2-svghelper": "^1.0",
+    "meanbee/magento2-serviceworker": "^2.2",
+    "meanbee/magento2-webappmanifest": "^1.1",
+    "meanbee/magento2-svghelper": "^1.1",
     "meanbee/magento2-pwa": "@dev",
-    "meanbee/magento2-csspreload": "^1.0"
+    "meanbee/magento2-csspreload": "^1.1"
   },
   "autoload": {
     "files": [
