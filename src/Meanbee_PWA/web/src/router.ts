@@ -7,7 +7,6 @@
 import $ = require("jquery");
 import _ = require("underscore");
 import customerData = require("Magento_Customer/js/customer-data");
-import pageCache = require("pageCache");
 import HistoryTracker = require("./history");
 import Messages = require("./messages");
 import DataStore = require("./dataStore");
@@ -209,27 +208,30 @@ class Router {
      * @returns Router
      */
     routes(routes: RouteConfig[]): this {
-        const keys = _.uniq(_.pluck(routes, "path"));
-        if (keys.length <= 0) {
+        const paths: string[] = _.uniq(_.pluck(routes, "path"));
+
+        if (paths.length <= 0) {
             return this;
         }
 
-        const data: RouteCallback = {};
-        _.each(keys, value => {
-            if (typeof data[value] === "undefined") {
-                data[value] = {
+        const routeCallbacks: RouteCallback = {};
+
+        // Initialise the route callback
+        _.each(paths, (path: string) => {
+            if (typeof routeCallbacks[path] === "undefined") {
+                routeCallbacks[path] = {
                     before: [],
-                    after: []
+                    after:  []
                 };
             }
         });
 
-        _.each(routes, obj => {
+        _.each(routes, (obj: RouteConfig) => {
             const { path, callback, action } = obj;
-            data[path][action].push(callback);
+            routeCallbacks[path][action].push(callback);
         });
 
-        this.routeCallbacks = data;
+        this.routeCallbacks = routeCallbacks;
 
         return this;
     }

@@ -12,7 +12,7 @@ const Back = Component.extend({
     /**
      * @override
      */
-    initialize(config) {
+    initialize(config: any) {
         const options = config && config.options;
         const excludes = options && options.excludeUrl;
         const excludeUrl = new URL(excludes);

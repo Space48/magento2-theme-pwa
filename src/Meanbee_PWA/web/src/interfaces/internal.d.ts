@@ -23,7 +23,11 @@ interface BlockConfig {
 }
 
 interface RouteCallback {
-    [name: string]: { [action in keyof Action]: Function[] };
+    // Would be great to use the type alias "Action" here to enforce valid values for the keys, but it's not possible.
+    // @see https://github.com/Microsoft/TypeScript/issues/1778
+    [name: string]: {
+        [action: string]: Function[]
+    };
 }
 
 type Action = "before" | "after";

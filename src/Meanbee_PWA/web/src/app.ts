@@ -5,7 +5,6 @@
 "use strict";
 
 import $ = require("jquery");
-import _ = require("underscore");
 import DataStore = require("./dataStore");
 import Router = require("./router");
 import CartRoute = require("./routes/cart");
@@ -76,7 +75,7 @@ const App = {
             document.title = decodeEntities(title);
         });
 
-        function decodeEntities(encodedString) {
+        function decodeEntities(encodedString: string) {
             var textArea = document.createElement("textarea");
             textArea.innerHTML = encodedString;
             return textArea.value;

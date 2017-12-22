@@ -8,7 +8,6 @@ import $ = require("jquery");
 import ko = require("knockout");
 import SPA = require("spa");
 import Component = require("uiComponent");
-import mage = require("mage/apply/main");
 
 const namespace = "Block";
 
