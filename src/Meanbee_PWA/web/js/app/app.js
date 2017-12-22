@@ -9,14 +9,17 @@ define(["require", "exports", "jquery", "./dataStore", "./router", "./routes/car
             }
         }
     };
+    var ds = new DataStore();
+    var router = new Router(routerConfig).setDataStore(ds);
     var App = {
+        store: ds,
+        router: router,
         state: {
             title: null,
             url: null
         },
         initialize: function () {
-            this.store = new DataStore();
-            this.router = new Router(routerConfig).setDataStore(this.store).routes([
+            this.router.routes([
                 {
                     path: "checkout/cart",
                     action: "before",

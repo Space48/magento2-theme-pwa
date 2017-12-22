@@ -23,7 +23,13 @@ const routerConfig = {
     }
 };
 
+const ds = new DataStore();
+const router = new Router(routerConfig).setDataStore(ds);
+
 const App = {
+    store: ds,
+    router: router,
+
     state: {
         title: null,
         url: null
@@ -33,8 +39,7 @@ const App = {
      * App initialization
      */
     initialize() {
-        this.store = new DataStore();
-        this.router = new Router(routerConfig).setDataStore(this.store).routes([
+        this.router.routes([
             {
                 path: "checkout/cart",
                 action: "before",
