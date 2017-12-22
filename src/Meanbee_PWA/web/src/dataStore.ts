@@ -6,8 +6,9 @@
 "use strict";
 
 import _ = require("underscore");
-import $ = require("jquery");
 import ko = require("knockout");
+import Ajax = require("./ajax");
+import ResponseFormatError = require("./errors/response_format_error");
 
 class DataStore {
     state: any;
@@ -81,128 +82,25 @@ class DataStore {
     }
 
     /**
-     * Add service worker param to existing serialized data array
-     *
-     * @param {Array} data - Array of objects
-     * @return {*}
-     */
-    _addSwParam(data: JQuery.NameValuePair[]) {
-        data.push({ name: "service_worker", value: "true" });
-        return data;
-    }
-
-    /**
-     * Add name/value pairs to url
-     *
-     * @param {String} url
-     * @param {Array} data - Array of objects
-     * @return {*}
-     */
-    _addSearchParams(url: string, data: JQuery.NameValuePair[]) {
-        const urlObj = new URL(url);
-
-        _.each(data, obj => {
-            urlObj.searchParams.append(obj.name, obj.value);
-        });
-
-        return urlObj.href;
-    }
-
-    /**
-     * Post data to given url
-     *
-     * @param {String} url
-     * @param {Array} data - Array of objects
-     * @return {*}
-     */
-    _postRequest(url: string, data: JQuery.NameValuePair[] = []) {
-        const body = this._addSwParam(data);
-
-        return $.ajax(url, {
-            data: body,
-            method: "post",
-            cache: true,
-            xhrFields: {
-                withCredentials: true
-            }
-        }).fail((jqXHR, message, error) => {
-            return new Error(message);
-        });
-    }
-
-    /**
-     * Get server response for given url
-     *
-     * @param {String} url
-     * @param {Array} data - Array of objects
-     * @return {*}
-     */
-    _getRequest(url: string, data: JQuery.NameValuePair[] = []) {
-        const prepareData = this._addSwParam(data);
-        const requestUrl = this._addSearchParams(url, prepareData);
-
-        return $.ajax(requestUrl, {
-            method: "get",
-            cache: true,
-            xhrFields: {
-                withCredentials: true
-            }
-        }).fail((jqXHR, message, error) => {
-            return new Error(message);
-        });
-    }
-
-    /**
-     * If resolved json is another redirect, re-resolve.
-     * Magento can return json if it detects an ajax request,
-     * this JSON is not the PWA response json we require. Re-request.
-     *
-     * @param {Object} json
-     * @return {*}
-     */
-    _handleJson(json: PWA_JSON) {
-        const { content, backUrl } = json;
-
-        if (content) {
-            return json;
-        }
-
-        if (backUrl) {
-            return this._getRequest(backUrl);
-        }
-
-        return false;
-    }
-
-    /**
-     * Handle given error
-     *
-     * @param {String} error
-     * @return {Object}
-     */
-    _handleError(error: string) {
-        throw new Error(error);
-    }
-
-    /**
      * Send request to server
      *
      * @param {Object} options
-     * @return {*}
+     * @return {Promise<PWA_JSON>}
      */
-    fetch(options: DataStoreRequest) {
+    async fetch(options: DataStoreRequest) : Promise<PWA_JSON> {
         let { url, data, method } = options;
         let req;
 
         method = method || "get";
+        req = Ajax.request(url, method, data);
 
-        if (method === "post") {
-            req = this._postRequest(url, data);
-        } else {
-            req = this._getRequest(url, data);
+        let responseBody = await req.then();
+
+        if (typeof responseBody == 'string') {
+            throw new ResponseFormatError('The response from the server was a string - was expecting JSON');
         }
 
-        return req.then(this._handleJson.bind(this));
+        return responseBody;
     }
 
     /**
@@ -215,8 +113,7 @@ class DataStore {
         const req = this.fetch(options);
 
         return req
-            .then(this.update.bind(this))
-            .catch(this._handleError.bind(this));
+            .then(this.update.bind(this));
     }
 }
 

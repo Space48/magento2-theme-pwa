@@ -33,7 +33,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "jquery", "underscore", "Magento_Customer/js/customer-data", "./history", "./messages", "./router/link", "./router/locationChange", "./router/form"], function (require, exports, $, _, customerData, HistoryTracker, Messages, Link, LocationChange, Form) {
+define(["require", "exports", "jquery", "underscore", "Magento_Customer/js/customer-data", "./history", "./messages", "./router/link", "./router/locationChange", "./router/form", "./errors/response_format_error", "./errors/http_error"], function (require, exports, $, _, customerData, HistoryTracker, Messages, Link, LocationChange, Form, ResponseFormatError, HttpError) {
     "use strict";
     var Router = (function () {
         function Router(config) {
@@ -170,18 +170,38 @@ define(["require", "exports", "jquery", "underscore", "Magento_Customer/js/custo
         Router.prototype.resolve = function (request) {
             var _this = this;
             return function () { return __awaiter(_this, void 0, void 0, function () {
-                var result;
+                var result, e_1;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             this._routeBefore();
-                            return [4, this.dataStore.fetch(request)];
+                            result = {};
+                            _a.label = 1;
                         case 1:
+                            _a.trys.push([1, 3, 4, 5]);
+                            return [4, this.dataStore.fetch(request)];
+                        case 2:
                             result = _a.sent();
                             this._compareHistory(request, result);
                             this.dataStore.update(result);
+                            return [3, 5];
+                        case 3:
+                            e_1 = _a.sent();
+                            if (e_1 instanceof HttpError) {
+                                alert(e_1.message);
+                            }
+                            else if (e_1 instanceof ResponseFormatError) {
+                                console.warn(e_1.message);
+                                alert("Sorry, there was a problem communicating with the server.");
+                            }
+                            else {
+                                throw e_1;
+                            }
+                            return [3, 5];
+                        case 4:
                             this._routeAfter();
-                            return [2, result];
+                            return [7];
+                        case 5: return [2, result];
                     }
                 });
             }); };

@@ -14,6 +14,8 @@ import DataStore = require("./dataStore");
 import Link = require("./router/link");
 import LocationChange = require("./router/locationChange");
 import Form = require("./router/form");
+import ResponseFormatError = require("./errors/response_format_error");
+import HttpError = require("./errors/http_error");
 
 class Router {
     history: HistoryTracker;
@@ -292,10 +294,25 @@ class Router {
         return async () => {
             this._routeBefore();
 
-            const result = await this.dataStore.fetch(request);
-            this._compareHistory(request, result);
-            this.dataStore.update(result);
-            this._routeAfter();
+            let result = <PWA_JSON> {};
+
+            try {
+                result = await this.dataStore.fetch(request);
+                this._compareHistory(request, result);
+                this.dataStore.update(result);
+            } catch (e) {
+                if (e instanceof HttpError) {
+                    alert(e.message);
+                } else if (e instanceof ResponseFormatError) {
+                    console.warn(e.message);
+                    alert("Sorry, there was a problem communicating with the server.");
+                } else {
+                    throw e;
+                }
+            } finally {
+                this._routeAfter();
+            }
+
             return result;
         };
     }
