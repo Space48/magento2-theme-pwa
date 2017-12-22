@@ -1,6 +1,7 @@
 import $ = require('jquery');
 import _ = require('underscore');
 import HttpError = require("./errors/http_error");
+import Debbuger = require("./debugger");
 
 class Ajax {
 
@@ -14,6 +15,8 @@ class Ajax {
      * @returns {Promise<any>}
      */
     static request(url: string, method: string, data: JQuery.NameValuePair[] = []): Promise<any> {
+        let debug = new Debbuger("ajax");
+
         method = method.toLowerCase();
 
         // Add the service worker to GET/POST data
@@ -39,9 +42,18 @@ class Ajax {
 
             $.ajax(url, ajaxOptions)
                 .then((data, textStatus, jqXHR) => {
+                    debug.log(`request to ${url} succeeded`, 'request', {
+                        response: data
+                    });
+
                     resolve(data);
                 }).fail((jqXHR: JQueryXHR, textStatus, errorThrown) => {
                     const statusCode = jqXHR.status;
+
+                    debug.warn(`request to ${url} failed`, 'request', {
+                        statusCode: statusCode,
+                        textStatus: textStatus
+                    });
 
                     let message = "A problem occurred.";
 

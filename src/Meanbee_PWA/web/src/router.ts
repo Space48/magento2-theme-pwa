@@ -15,6 +15,7 @@ import LocationChange = require("./router/locationChange");
 import Form = require("./router/form");
 import ResponseFormatError = require("./errors/response_format_error");
 import HttpError = require("./errors/http_error");
+import Debugger = require("./debugger");
 
 class Router {
     history: HistoryTracker;
@@ -24,6 +25,7 @@ class Router {
     routeCallbacks: { [name: string]: {} };
     defaultBindings: {};
     bindings: {};
+    debugger: Debugger;
 
     /**
      * Router initialization
@@ -38,6 +40,8 @@ class Router {
             locationChange: LocationChange,
             forms: Form
         };
+
+        this.debugger = new Debugger('router');
 
         return this;
     }
@@ -294,12 +298,16 @@ class Router {
      */
     resolve(request: DataStoreRequest) {
         return async () => {
+            this.debugger.log('request made', 'resolve');
+
             this._routeBefore();
 
             let result = <PWA_JSON> {};
 
             try {
                 result = await this.dataStore.fetch(request);
+
+                this.debugger.log('request returned', 'resolve');
                 this._compareHistory(request, result);
                 this.dataStore.update(result);
             } catch (e) {

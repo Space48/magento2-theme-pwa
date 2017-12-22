@@ -8,6 +8,7 @@ import $ = require("jquery");
 import DataStore = require("./dataStore");
 import Router = require("./router");
 import CartRoute = require("./routes/cart");
+import Debugger = require("./debugger");
 
 // References
 import HistoryTracker = require("./history");
@@ -21,6 +22,8 @@ const routerConfig = {
         }
     }
 };
+
+Debugger.enable();
 
 const ds = new DataStore();
 const router = new Router(routerConfig).setDataStore(ds);
