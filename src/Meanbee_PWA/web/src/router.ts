@@ -16,6 +16,7 @@ import Form = require("./router/form");
 import ResponseFormatError = require("./errors/response_format_error");
 import HttpError = require("./errors/http_error");
 import Debugger = require("./debugger");
+import CartRouteCallbacks = require("./routes/cart");
 
 class Router {
     history: HistoryTracker;
@@ -268,6 +269,15 @@ class Router {
         });
 
         $(document).trigger(`route:*:after`);
+
+        // @TODO This is a hack to get it working. We need to move this out to our generic route callback system (when it exists)
+        if (url.match(/checkout\/cart(\/index)?/)) {
+            this.debugger.log('fired cart callback', '_routeAfter', {
+                url: url
+            });
+
+            CartRouteCallbacks();
+        }
 
         // Path match callbacks
         this._resetFormKeys();
