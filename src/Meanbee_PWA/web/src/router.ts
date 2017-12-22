@@ -25,6 +25,7 @@ class Router {
     routeCallbacks: { [name: string]: {} };
     defaultBindings: {};
     bindings: {};
+    requestCounter: number = 0;
     debugger: Debugger;
 
     /**
@@ -246,7 +247,11 @@ class Router {
      * @param {Object} data - The resolved request
      * @returns {Object} data
      */
-    _routeBefore() {
+    _routeBefore(url: string) {
+        this.debugger.log('fired', '_routeBefore', {
+            url: url
+        });
+
         $(document).trigger(`route:*:before`);
     }
 
@@ -257,7 +262,11 @@ class Router {
      * @param {Object} data - The resolved request data
      * @returns {Object} data
      */
-    _routeAfter() {
+    _routeAfter(url: string) {
+        this.debugger.log('fired', '_routeAfter', {
+            url: url
+        });
+
         $(document).trigger(`route:*:after`);
 
         // Path match callbacks
@@ -298,18 +307,40 @@ class Router {
      */
     resolve(request: DataStoreRequest) {
         return async () => {
-            this.debugger.log('request made', 'resolve');
+            // A unique identifier for this request.
+            const requestId = ++this.requestCounter;
 
-            this._routeBefore();
+            this.debugger.log('request made', 'resolve', {
+                requestId: requestId
+            });
+
+            this._routeBefore(request.url);
 
             let result = <PWA_JSON> {};
 
             try {
                 result = await this.dataStore.fetch(request);
 
-                this.debugger.log('request returned', 'resolve');
+                this.debugger.log('request returned', 'resolve', {
+                    requestId: requestId
+                });
+
+                // Check that our request is still the latest. If it isn't, then return early.
+                if (this.requestCounter != requestId) {
+
+                    this.debugger.log(
+                        'discarding response as there are newer requests',
+                        'resolve',{
+                            requestId: requestId
+                        }
+                    );
+
+                    return;
+                }
+
                 this._compareHistory(request, result);
                 this.dataStore.update(result);
+                this._routeAfter(request.url);
             } catch (e) {
                 if (e instanceof HttpError) {
                     alert(e.message);
@@ -319,8 +350,8 @@ class Router {
                 } else {
                     throw e;
                 }
-            } finally {
-                this._routeAfter();
+
+                this._routeAfter(request.url);
             }
 
             return result;
