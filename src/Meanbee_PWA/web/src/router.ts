@@ -245,7 +245,7 @@ class Router {
     /**
      * Before store data is updated
      *
-     * @param {Object} data - The resolved request
+     * @param {string} url - The URL that's being navigated to.
      * @returns {Object} data
      */
     _routeBefore(url: string) {
@@ -257,8 +257,7 @@ class Router {
     /**
      * After store data has been updated
      *
-     * @param {Object} request - The initial request
-     * @param {Object} data - The resolved request data
+     * @param {string} url - The URL that's being navigated to.
      * @returns {Object} data
      */
     _routeAfter(url: string) {
