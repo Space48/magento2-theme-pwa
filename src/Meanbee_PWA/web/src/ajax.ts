@@ -51,8 +51,8 @@ class Ajax {
                     const statusCode = jqXHR.status;
 
                     debug.warn(`request to ${url} failed`, 'request', {
-                        statusCode: statusCode,
-                        textStatus: textStatus
+                        statusCode,
+                        textStatus
                     });
 
                     let message = "A problem occurred.";

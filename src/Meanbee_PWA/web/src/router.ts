@@ -249,9 +249,7 @@ class Router {
      * @returns {Object} data
      */
     _routeBefore(url: string) {
-        this.debugger.log('fired', '_routeBefore', {
-            url: url
-        });
+        this.debugger.log('fired', '_routeBefore', { url });
 
         $(document).trigger(`route:*:before`);
     }
@@ -264,17 +262,13 @@ class Router {
      * @returns {Object} data
      */
     _routeAfter(url: string) {
-        this.debugger.log('fired', '_routeAfter', {
-            url: url
-        });
+        this.debugger.log('fired', '_routeAfter', { url });
 
         $(document).trigger(`route:*:after`);
 
         // @TODO This is a hack to get it working. We need to move this out to our generic route callback system (when it exists)
         if (url.match(/checkout\/cart(\/index)?/)) {
-            this.debugger.log('fired cart callback', '_routeAfter', {
-                url: url
-            });
+            this.debugger.log('fired cart callback', '_routeAfter', { url });
 
             CartRouteCallbacks();
         }
@@ -320,9 +314,7 @@ class Router {
             // A unique identifier for this request.
             const requestId = ++this.requestCounter;
 
-            this.debugger.log('request made', 'resolve', {
-                requestId: requestId
-            });
+            this.debugger.log('request made', 'resolve', { requestId });
 
             this._routeBefore(request.url);
 
@@ -331,18 +323,15 @@ class Router {
             try {
                 result = await this.dataStore.fetch(request);
 
-                this.debugger.log('request returned', 'resolve', {
-                    requestId: requestId
-                });
+                this.debugger.log('request returned', 'resolve', { requestId });
 
                 // Check that our request is still the latest. If it isn't, then return early.
                 if (this.requestCounter != requestId) {
 
                     this.debugger.log(
                         'discarding response as there are newer requests',
-                        'resolve',{
-                            requestId: requestId
-                        }
+                        'resolve',
+                        { requestId }
                     );
 
                     return;
