@@ -1,7 +1,7 @@
 import $ = require('jquery');
 import _ = require('underscore');
 import HttpError = require("./errors/http_error");
-import Debbuger = require("./debugger");
+import Debugger = require("./debugger");
 
 class Ajax {
 
@@ -15,7 +15,7 @@ class Ajax {
      * @returns {Promise<any>}
      */
     static request(url: string, method: string, data: JQuery.NameValuePair[] = []): Promise<any> {
-        let debug = new Debbuger("ajax");
+        let debug = new Debugger("ajax");
 
         method = method.toLowerCase();
 
