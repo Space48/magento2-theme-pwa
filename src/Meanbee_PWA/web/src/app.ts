@@ -5,10 +5,10 @@
 "use strict";
 
 import $ = require("jquery");
-import _ = require("underscore");
 import DataStore = require("./dataStore");
 import Router = require("./router");
 import CartRoute = require("./routes/cart");
+import Debugger = require("./debugger");
 
 // References
 import HistoryTracker = require("./history");
@@ -23,7 +23,15 @@ const routerConfig = {
     }
 };
 
+Debugger.enable();
+
+const ds = new DataStore();
+const router = new Router(routerConfig).setDataStore(ds);
+
 const App = {
+    store: ds,
+    router: router,
+
     state: {
         title: null,
         url: null
@@ -33,8 +41,7 @@ const App = {
      * App initialization
      */
     initialize() {
-        this.store = new DataStore();
-        this.router = new Router(routerConfig).setDataStore(this.store).routes([
+        this.router.routes([
             {
                 path: "checkout/cart",
                 action: "before",
@@ -71,7 +78,7 @@ const App = {
             document.title = decodeEntities(title);
         });
 
-        function decodeEntities(encodedString) {
+        function decodeEntities(encodedString: string) {
             var textArea = document.createElement("textarea");
             textArea.innerHTML = encodedString;
             return textArea.value;

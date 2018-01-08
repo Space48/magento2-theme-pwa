@@ -7,13 +7,16 @@
 import $ = require("jquery");
 import _ = require("underscore");
 import customerData = require("Magento_Customer/js/customer-data");
-import pageCache = require("pageCache");
 import HistoryTracker = require("./history");
 import Messages = require("./messages");
 import DataStore = require("./dataStore");
 import Link = require("./router/link");
 import LocationChange = require("./router/locationChange");
 import Form = require("./router/form");
+import ResponseFormatError = require("./errors/response_format_error");
+import HttpError = require("./errors/http_error");
+import Debugger = require("./debugger");
+import CartRouteCallbacks = require("./routes/cart");
 
 class Router {
     history: HistoryTracker;
@@ -23,6 +26,8 @@ class Router {
     routeCallbacks: { [name: string]: {} };
     defaultBindings: {};
     bindings: {};
+    requestCounter: number = 0;
+    debugger: Debugger;
 
     /**
      * Router initialization
@@ -37,6 +42,8 @@ class Router {
             locationChange: LocationChange,
             forms: Form
         };
+
+        this.debugger = new Debugger('router');
 
         return this;
     }
@@ -207,27 +214,30 @@ class Router {
      * @returns Router
      */
     routes(routes: RouteConfig[]): this {
-        const keys = _.uniq(_.pluck(routes, "path"));
-        if (keys.length <= 0) {
+        const paths: string[] = _.uniq(_.pluck(routes, "path"));
+
+        if (paths.length <= 0) {
             return this;
         }
 
-        const data: RouteCallback = {};
-        _.each(keys, value => {
-            if (typeof data[value] === "undefined") {
-                data[value] = {
+        const routeCallbacks: RouteCallback = {};
+
+        // Initialise the route callback
+        _.each(paths, (path: string) => {
+            if (typeof routeCallbacks[path] === "undefined") {
+                routeCallbacks[path] = {
                     before: [],
-                    after: []
+                    after:  []
                 };
             }
         });
 
-        _.each(routes, obj => {
+        _.each(routes, (obj: RouteConfig) => {
             const { path, callback, action } = obj;
-            data[path][action].push(callback);
+            routeCallbacks[path][action].push(callback);
         });
 
-        this.routeCallbacks = data;
+        this.routeCallbacks = routeCallbacks;
 
         return this;
     }
@@ -235,22 +245,32 @@ class Router {
     /**
      * Before store data is updated
      *
-     * @param {Object} data - The resolved request
+     * @param {string} url - The URL that's being navigated to.
      * @returns {Object} data
      */
-    _routeBefore() {
+    _routeBefore(url: string) {
+        this.debugger.log('fired', '_routeBefore', { url });
+
         $(document).trigger(`route:*:before`);
     }
 
     /**
      * After store data has been updated
      *
-     * @param {Object} request - The initial request
-     * @param {Object} data - The resolved request data
+     * @param {string} url - The URL that's being navigated to.
      * @returns {Object} data
      */
-    _routeAfter() {
+    _routeAfter(url: string) {
+        this.debugger.log('fired', '_routeAfter', { url });
+
         $(document).trigger(`route:*:after`);
+
+        // @TODO This is a hack to get it working. We need to move this out to our generic route callback system (when it exists)
+        if (url.match(/checkout\/cart(\/index)?/)) {
+            this.debugger.log('fired cart callback', '_routeAfter', { url });
+
+            CartRouteCallbacks();
+        }
 
         // Path match callbacks
         this._resetFormKeys();
@@ -290,12 +310,48 @@ class Router {
      */
     resolve(request: DataStoreRequest) {
         return async () => {
-            this._routeBefore();
+            // A unique identifier for this request.
+            const requestId = ++this.requestCounter;
 
-            const result = await this.dataStore.fetch(request);
-            this._compareHistory(request, result);
-            this.dataStore.update(result);
-            this._routeAfter();
+            this.debugger.log('request made', 'resolve', { requestId });
+
+            this._routeBefore(request.url);
+
+            let result = <PWA_JSON> {};
+
+            try {
+                result = await this.dataStore.fetch(request);
+
+                this.debugger.log('request returned', 'resolve', { requestId });
+
+                // Check that our request is still the latest. If it isn't, then return early.
+                if (this.requestCounter != requestId) {
+
+                    this.debugger.log(
+                        'discarding response as there are newer requests',
+                        'resolve',
+                        { requestId }
+                    );
+
+                    return;
+                }
+
+                this._compareHistory(request, result);
+                this.dataStore.update(result);
+                this._routeAfter(request.url);
+            } catch (e) {
+                if (e instanceof HttpError) {
+                    alert(e.message);
+                } else if (e instanceof ResponseFormatError) {
+                    console.warn(e.message);
+                    alert("Sorry, there was a problem communicating with the server.");
+                } else {
+                    throw e;
+                }
+
+                this._routeAfter(request.url);
+            }
+
             return result;
         };
     }

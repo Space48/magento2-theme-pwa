@@ -4,13 +4,10 @@
 
 "use strict";
 
-import ko = require("knockout");
-import $ = require("jquery");
 import Messages = require("Meanbee_PWA/js/app/messages");
-import Component = require("uiComponent");
 import cookieMessages = require("jquery/jquery-storageapi");
 
-const Mixin = Component => {
+const Mixin = (Component: any) => {
     return Component.extend({
         initialize() {
             this._super();
